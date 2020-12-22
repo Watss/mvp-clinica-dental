@@ -1,5 +1,5 @@
 ### Architecture Individual Diagram
-<img src="https://www.notion.so/Software-clinica-dental-bbcc6b463cf84c66940ea5ce06c8123d#a3b1b238113645fc82f1aa544bd3ae01"></img>
+<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/3e4e08b8-7796-49b7-b5b3-5e52837d94e3/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20201222%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201222T042841Z&X-Amz-Expires=86400&X-Amz-Signature=8c471351993b420d0ba868fe1d3a8882c09a94db67747fc9ebbce320564392f1&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22"></img>
 
 ### Libraries - Frameworks
 
