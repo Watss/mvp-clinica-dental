@@ -20,4 +20,5 @@
 - **[Ducks Structure Redux](https://github.com/erikras/ducks-modular-redux)**
 - **[Specification JSON API](https://jsonapi.org/)**
 - **[Airbnb Guide Styled](https://github.com/airbnb/javascript?utm_content=buffer53877&utm_medium=social&utm_source=facebook.com&utm_campaign=buffer)**
-;
+
+![](https://github.com/Watss/mvp-clinica-dental/workflows/mvp-clinica-dental-workflow/badge.svg)
