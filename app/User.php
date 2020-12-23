@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Office;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -31,4 +32,8 @@ class User extends Authenticatable
     ];
 
     //TODO: added sort and filter nessery methods
+
+    public function office(){
+        return $this->belongsTo(Office::class);
+    }
 }
