@@ -1,6 +1,35 @@
 ### Architecture Individual Diagram
 <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/3e4e08b8-7796-49b7-b5b3-5e52837d94e3/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20201222%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201222T042841Z&X-Amz-Expires=86400&X-Amz-Signature=8c471351993b420d0ba868fe1d3a8882c09a94db67747fc9ebbce320564392f1&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22"></img>
 
+
+### Setup
+
+**(cannot remember setting env file)**
+
+setup dependencies:
+
+```sh
+$ composer install
+```
+
+```sh
+$ npm install
+```
+
+```sh
+$ npm run production (en producción) --- npm run dev o watch (on dev env)
+```
+
+```sh
+$ php artisan migrate (suggested uses --> php artisan db:wipe on update or merge branch)
+```
+
+```sh
+$ php artisan db:seed
+```
+
+
+
 ### Libraries - Frameworks
 
 - **[React](https://es.reactjs.org/)**
@@ -12,6 +41,7 @@
 
 - **[Abel Apablaza](---)**
 - **[Leandro Sepulveda](---)**
+- **[Felipe Martinez](--)**
 - **[Diego Gonzalez](http://diego-gonzalez.adxtechnology.tk)**
 
 

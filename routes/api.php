@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['prefix' => 'v1'], function () {
+    
+    //users
+    Route::apiResource('users','Api\DentistController');
+    //dentist
+    Route::apiResource('dentists','Api\DentistController');
+    Route::post('dentists/{id}','Api\DentistController@restore')->name('dentists.restore');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
 });
