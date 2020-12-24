@@ -5,8 +5,9 @@
 /vendor
 .env
 .env.test
-/public/js/app.js
-/public/css/app.css
+/public/js/*.js
+/public/css/*.css
+/public/images
 .env.backup
 .phpunit.result.cache
 Homestead.json
