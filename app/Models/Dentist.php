@@ -14,6 +14,10 @@ class Dentist extends Model
         'email','account_number','user_id'
     ];
 
+    public $allowedSorts = [
+        'id'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -22,5 +26,29 @@ class Dentist extends Model
     public function schedules()
     {
         return $this->belongsTo(Schedule::class);
+    }
+
+    public function scopeNames($query,$value){
+        if($value){
+            return $query->whereHas('user', function($query) use ($value){
+                $query->likeName($value);
+            });
+        }
+    }
+
+    public function scopeRut($query,$rut){
+        if($rut){
+            return $query->whereHas('user', function($query) use ($rut){
+                $query->rut($rut);
+            });
+        }
+    }
+
+    public function scopeOffice($query,$office){
+        if($office){
+            return $query->whereHas('user', function($query) use ($office){
+                $query->office($office);
+            });
+        }
     }
 }
