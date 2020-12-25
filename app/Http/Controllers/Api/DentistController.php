@@ -20,7 +20,7 @@ class DentistController extends Controller
      */
     public function index(Request $request)
     {
-        return DentistCollection::make(Dentist::all());
+        return DentistCollection::make(Dentist::applyFilters()->applySorts()->apiPaginate());
     }
 
     /**
