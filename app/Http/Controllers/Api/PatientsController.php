@@ -19,7 +19,7 @@ class PatientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return PatientsCollection::make(Patient::applyFilters()->applySorts()->apiPaginate());
     }
@@ -34,7 +34,7 @@ class PatientsController extends Controller
     {
         //dd($request->all());
 
-            $patient = Patient::create($request->all());
+        $patient = Patient::create($request->all());
 
         return response()->json([
             "success" => true,
@@ -60,9 +60,14 @@ class PatientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PatientsRequest $request, Patient $patient)
     {
-        //
+        $patient->update($request->except('rut'));
+
+        return response()->json([
+            "success" => true,
+            "dentist" => PatientsResource::make($patient)
+        ], 200);
     }
 
     /**
@@ -71,8 +76,25 @@ class PatientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Patient $patient)
     {
-        //
+
+        $name = $patient->names;
+        $patient->delete();
+        return response()->json([
+            "success" => true,
+            "message" => "el Paciente $name ha sido correctamente Deshabilitado"
+        ], 200);
+    }
+
+    public function restore($id)
+    {
+        $patient = Patient::withTrashed()->find($id);
+        $patient->restore();
+
+        return response()->json([
+            "success" => true,
+            "message" => "el paciente $patient->names ha sido Habilitado"
+        ], 200);
     }
 }
