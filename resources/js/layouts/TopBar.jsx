@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import {
   AppBar,
   Box,
@@ -10,66 +12,111 @@ import {
   Toolbar,
   makeStyles,
   Typography,
-  IconButton
+  IconButton,
+  Avatar,
+  Button
 } from '@material-ui/core';
-import { AccountCircle } from '@material-ui/icons';
+import { AccountCircle, Height } from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  avatar: {
-    width: 60,
-    height: 60
-  },
-  logoColor : {
+
+  logoColor: {
     color: theme.palette.text.logo
+  },
+  avatar: {
+    backgroundColor: theme.palette.secondary.main,
+    padding: 0,
+    width: 34,
+    height: 34
+  },
+  iconButtonAvatar: {
+    padding: 0
+  },
+  listMenu: {
+    marginLeft: 30
+  },
+  listMenuLink: {
+    marginLeft: 2,
+    marginRight:2
   }
+
+
 }));
 
 const TopBar = ({
   className,
 }) => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar
       className={clsx(classes.root, className)}
-      elevation={3}
+      elevation={1}
+      color="primary"
     >
       <Toolbar variant="dense">
         <RouterLink to="/">
-            <Typography color="error" className={classes.logoColor} variant="h5">{process.env.MIX_REACT_APP_NAME}</Typography>
+          <Typography color="error" className={classes.logoColor} variant="h6">DentaCloud</Typography>
         </RouterLink>
+        <Box className={classes.listMenu}>
+          <Button size="small" color="inherit" disableElevation className={classes.listMenuLink}>Agenda</Button>
+          <Button size="small" color="inherit" disableElevation className={classes.listMenuLink}>Pacientes</Button>
+          <Button size="small" color="inherit" disableElevation className={classes.listMenuLink} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} endIcon={<ExpandMoreIcon />}>Administración</Button>
+          <Menu
+            elevation={1}
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>Odonotologos</MenuItem>
+          </Menu>
+        </Box>
+
+
         <Box flexGrow={1} />
 
         <div>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                
-              >
-                <MenuItem >Profile</MenuItem>
-                <MenuItem >My account</MenuItem>
-              </Menu>
-            </div>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            className={classes.iconButtonAvatar}
+            color="inherit"
+
+          >
+            <Avatar className={classes.avatar}>N</Avatar>
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+
+          >
+            <MenuItem >Profile</MenuItem>
+            <MenuItem >My account</MenuItem>
+          </Menu>
+        </div>
       </Toolbar>
     </AppBar>
   );
