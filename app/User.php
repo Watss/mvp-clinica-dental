@@ -36,4 +36,19 @@ class User extends Authenticatable
     public function office(){
         return $this->belongsTo(Office::class);
     }
+
+    public function scopelikeName($query,$value){
+        if($value)
+            return $query->where('names', 'like', "%$value%");
+    }
+
+    public function scopeRut($query,$rut){
+        if($rut)
+            return $query->where('rut', '=', $rut);
+    }
+
+    public function scopeOffice($query,$office){
+        if($office)
+            return $query->where('id','=',$office);
+    }
 }
