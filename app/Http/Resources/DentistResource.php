@@ -32,7 +32,7 @@ class DentistResource extends JsonResource
             ],
             'relationships' => [
                 'user' => UserResource::make($this->resource->user),
-            ] 
+            ]
         ];
     }
 }
