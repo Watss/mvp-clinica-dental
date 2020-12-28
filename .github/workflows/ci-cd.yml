@@ -43,7 +43,7 @@ jobs:
        run: php artisan key:generate
  
      - name: Execute and verification tests
-       run: php artisan test
+       run: vendor/bin/phpunit --verbose
  
 #  deploy:
 #    runs-on: ubuntu-latest
