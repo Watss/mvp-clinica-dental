@@ -20,5 +20,6 @@ Route::group(['prefix' => 'v1'], function () {
     //dentist
     Route::apiResource('dentists','Api\DentistController');
     Route::post('dentists/{id}','Api\DentistController@restore')->name('dentists.restore');
-
+    //schedules
+    Route::apiResource('schedule','Api\ScheduleController');
 });
