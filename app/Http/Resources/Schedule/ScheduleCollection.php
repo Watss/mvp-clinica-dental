@@ -2,12 +2,11 @@
 
 namespace App\Http\Resources\Schedule;
 
-use App\Http\Requests\ScheduleRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ScheduleCollection extends ResourceCollection
 {
-    public $collects = ScheduleRequest::class;
+    public $collects = ScheduleResource::class;
     /**
      * Transform the resource collection into an array.
      *

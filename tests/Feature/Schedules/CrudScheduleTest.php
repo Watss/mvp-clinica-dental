@@ -45,7 +45,7 @@ class CrudScheduleTest extends TestCase
             ]
         ];
 
-        $response = $this->postJson(route('schedule.store'),$scheduleData);
+        $response = $this->postJson(route('schedules.store'),$scheduleData);
         
         $response->assertStatus(201);
         
