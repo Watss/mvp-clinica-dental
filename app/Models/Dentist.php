@@ -15,7 +15,10 @@ class Dentist extends Model
     ];
 
     public $allowedSorts = [
-        'id'
+        'id',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     public function user()
