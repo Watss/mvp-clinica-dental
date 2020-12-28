@@ -11,8 +11,8 @@ class Schedule extends Model
     public function dentists(){
         return $this->belongsToMany(Dentist::class);
     }
-
+    
     public function details(){
-        return $this->hasMany(DayStretch::class);
+        return $this->hasMany(ScheduleDetail::class);
     }
 }
