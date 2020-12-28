@@ -19,7 +19,6 @@ class CreateDentistScheduleTable extends Migration
             $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
             $table->foreignId('office_id')->constrained()->onDelete('cascade');
             $table->unique(['office_id', 'schedule_id','dentist_id']);
-            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }
