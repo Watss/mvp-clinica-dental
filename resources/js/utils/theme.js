@@ -7,15 +7,15 @@ export default createMuiTheme({
           paper: colors.common.white
         },
         primary: {
-          main: colors.blue['A700']
+          main: "#0d47a1"
         },
         secondary: {
-          main: colors.orange[500]
+          main: "#28a745"
         },
         text: {
           primary: colors.blueGrey[900],
           secondary: colors.blueGrey[600],
           logo : colors.common.white,
-        }
+        },
       },   
 });
