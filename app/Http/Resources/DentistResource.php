@@ -16,10 +16,11 @@ class DentistResource extends JsonResource
     {
         return  [
             'type' => 'dentist',
-            'id'   => $this->resource->getRouteKey(),
+            'id'   => (string) $this->resource->getRouteKey(),
             'attributes' => [
                 'names' => $this->resource->user->names,
                 'last_name'    => $this->resource->user->last_name,
+                'user' => $this->resource->user->user,
                 'rut'   => $this->resource->user->rut,
                 'adress' => $this->resource->user->adress,
                 'phone_number' => $this->resource->user->phone_number,
@@ -30,9 +31,7 @@ class DentistResource extends JsonResource
             'links' => [
                 'self' => route('dentists.show', $this->resource),
             ],
-            'relationships' => [
-                'user' => UserResource::make($this->resource->user),
-            ] 
+        
         ];
     }
 }

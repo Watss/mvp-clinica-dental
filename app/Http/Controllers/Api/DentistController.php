@@ -7,7 +7,6 @@ use App\Http\Resources\DentistResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\DentistRequest;
-
 use App\Models\Dentist;
 use App\User;
 
@@ -34,6 +33,7 @@ class DentistController extends Controller
             $userRequest = $request->except('email','account_number');
             $dentistRequest = $request->only('email','account_number');
 
+            $userRequest['password'] = bcrypt($userRequest['password']);
             $user = User::create($userRequest);
 
             $dentistRequest['user_id'] = $user->id;
@@ -65,7 +65,7 @@ class DentistController extends Controller
      */
     public function update(DentistRequest $request, Dentist $dentist)
     {
-        $dentist->user->update($request->except('email','account_number'));
+        $dentist->user->update($request->except('email','account_number','rut'));
         $dentist->update($request->only('email','account_number'));
 
         return response()->json([
@@ -92,7 +92,12 @@ class DentistController extends Controller
 
     public function restore($id)
     {
-        $dentist = Dentist::withTrashed()->find($id);
+        $dentist = Dentist::onlyTrashed()->find($id);
+        
+        if(!$dentist){
+            abort(404);
+        }
+
         $dentist->restore();
         $name = $dentist->user->user;
 
