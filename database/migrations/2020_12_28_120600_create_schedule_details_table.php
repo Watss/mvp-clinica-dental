@@ -22,6 +22,7 @@ class CreateScheduleDetailsTable extends Migration
             $table->time('rest_start_time')->nullable();
             $table->time('rest_end_time')->nullable();
             $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
+            $table->unique(['schedule_id', 'day_number','day_name']);
             $table->timestamps();
         });
     }
