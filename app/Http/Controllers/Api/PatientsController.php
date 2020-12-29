@@ -79,19 +79,23 @@ class PatientsController extends Controller
     public function destroy(Patient $patient)
     {
 
-        $name = $patient->names;
+
         $patient->delete();
         return response()->json([
             "success" => true,
-            "message" => "el Paciente $name ha sido correctamente Deshabilitado"
+            "message" => "el Paciente $patient->names ha sido correctamente Deshabilitado"
         ], 200);
     }
 
     public function restore($id)
     {
-        $patient = Patient::withTrashed()->find($id);
-        $patient->restore();
 
+        $patient = Patient::withTrashed()->find($id);
+
+        if(!$patient){
+            abort(404);
+        }
+        $patient->restore();
         return response()->json([
             "success" => true,
             "message" => "el paciente $patient->names ha sido Habilitado"
