@@ -31,7 +31,7 @@ class DentistRequest extends FormRequest
             'names' => ['required','max:50','min:2'],
             'last_name' => ['required','max:50','min:2'],
             'rut' => [
-                'required','max:9','min:8', 
+                'required','max:9','min:8',
                 $update ? "unique:users,rut,$id,id" : 'unique:users,rut,id'
             ],
             'user' =>[
