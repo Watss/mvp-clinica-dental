@@ -31,7 +31,6 @@ class DentistResource extends JsonResource
             'links' => [
                 'self' => route('dentists.show', $this->resource),
             ],
-        
         ];
     }
 }
