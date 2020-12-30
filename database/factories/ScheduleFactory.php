@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Schedule::class, function (Faker $faker) {
     return [
-        'name' => "calendario $faker->word"
+        'name' => "calendario".$faker->unique()->word
     ];
 });

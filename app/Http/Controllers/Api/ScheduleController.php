@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ScheduleRequest;
+use App\Http\Resources\Schedule\ScheduleCollection;
 use App\Http\Resources\Schedule\ScheduleResource;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
+        $schedules = Schedule::all();
+        return ScheduleCollection::make($schedules);
     }
 
     /**
@@ -49,7 +51,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        //
+        return ScheduleResource::make($schedule);
     }
 
     /**
@@ -72,6 +74,11 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        //
+        $name = $schedule->name;
+        $schedule->delete();
+        return response()->json([
+            "success" => true,
+            "message" => "el horario $name ha sido eliminado permanente"
+        ], 200);
     }
 }

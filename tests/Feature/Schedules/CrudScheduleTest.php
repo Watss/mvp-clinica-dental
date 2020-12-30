@@ -5,6 +5,7 @@ namespace Tests\Feature\Schedules;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Schedule;
 
 class CrudScheduleTest extends TestCase
 {
@@ -45,7 +46,7 @@ class CrudScheduleTest extends TestCase
             ]
         ];
 
-        $response = $this->postJson(route('schedule.store'),$scheduleData);
+        $response = $this->postJson(route('schedules.store'),$scheduleData);
         
         $response->assertStatus(201);
         
@@ -64,5 +65,25 @@ class CrudScheduleTest extends TestCase
             ]
         ]);
 
+    }
+
+    /**
+        @test
+     */
+    public function it_can_delete_permanent(){
+
+        $schedule = factory(Schedule::class)->create();
+
+        $response = $this->deleteJson(route('schedules.destroy',$schedule));
+        
+        //verify trashed dentist
+        $schedule = Schedule::find($schedule->id);
+        $this->assertNull($schedule);
+        
+        //verify response correctly
+        $response->assertJsonStructure([
+            'success',
+            'message'
+        ]);
     }
 }

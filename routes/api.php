@@ -28,6 +28,6 @@ Route::group(['prefix' => 'v1'], function () {
 
 
     //schedules
-    Route::apiResource('schedule','Api\ScheduleController');
+    Route::apiResource('schedules','Api\ScheduleController');
 
 });

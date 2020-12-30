@@ -24,7 +24,7 @@ class ScheduleResource extends JsonResource
                 'updated_at' => $this->resource->created_at,                
             ],
             'links' => [
-                'self' => route('schedule.show', $this->resource),
+                'self' => route('schedules.show', $this->resource),
             ],
         
         ];
