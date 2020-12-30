@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStretchesTable extends Migration
+class CreateScheduleDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,16 @@ class CreateStretchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stretches', function (Blueprint $table) {
+        Schema::create('schedule_details', function (Blueprint $table) {
             $table->id();
+            $table->string('day_name');
+            $table->integer('day_number');
             $table->time('start_time');
             $table->time('end_time');
             $table->time('rest_start_time')->nullable();
             $table->time('rest_end_time')->nullable();
+            $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
+            $table->unique(['schedule_id', 'day_number','day_name']);
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ class CreateStretchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stretches');
+        Schema::dropIfExists('schedule_details');
     }
 }

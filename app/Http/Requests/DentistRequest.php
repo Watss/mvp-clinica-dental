@@ -41,7 +41,10 @@ class DentistRequest extends FormRequest
             'password' => [
                 $update ? '' : 'required', 'min:6'
             ],
-            'office_id' => ['required','numeric','exists:offices,id'],
+            'office_id' => [
+                'numeric','exists:offices,id',
+                $update ? '' : 'required'
+            ],
             'adress' => ['required','min:2'],
             'phone_number' => ['required','min:9','max:12'],
             'email' => ['email'],

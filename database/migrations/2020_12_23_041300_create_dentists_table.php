@@ -18,6 +18,7 @@ class CreateDentistsTable extends Migration
             $table->string('email')->nullable();
             $table->string('account_number')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unique(['user_id']);
             $table->softDeletes();
             $table->timestamps();
         });
