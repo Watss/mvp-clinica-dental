@@ -66,7 +66,7 @@ class PatientsController extends Controller
 
         return response()->json([
             "success" => true,
-            "dentist" => PatientsResource::make($patient)
+            "patient" => PatientsResource::make($patient)
         ], 200);
     }
 

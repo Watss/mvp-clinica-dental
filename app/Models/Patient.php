@@ -18,7 +18,11 @@ class Patient extends Model
     ];
 
     public $allowedSorts = [
-        'id'
+        'id',
+        'names',
+        'created_at',
+        'updated_at',
+        'office_id'
     ];
 
     public function office()
