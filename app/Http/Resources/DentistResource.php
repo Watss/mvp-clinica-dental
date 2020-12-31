@@ -27,6 +27,7 @@ class DentistResource extends JsonResource
                 'account_number' => $this->resource->account_number,
                 'email' => $this->resource->email,
                 'user_id' => (string) $this->resource->user_id,
+                'created_at' => $this->resource->created_at
             ],
             'links' => [
                 'self' => route('dentists.show', $this->resource),
