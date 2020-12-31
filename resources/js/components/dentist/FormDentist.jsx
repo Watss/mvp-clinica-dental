@@ -3,6 +3,8 @@ import { Container, Grid, makeStyles, Box, Paper, TextField, Button, Checkbox, C
 import { CheckBox } from '@material-ui/icons';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { axiosInstance } from '../../utils/axios'
+import {Link} from "react-router-dom";
+
 export const FormDentist = ({ classes }) => {
 
 
@@ -291,8 +293,8 @@ export const FormDentist = ({ classes }) => {
                         </Grid>
                         <Grid container item lg={12} className={classes.actionsButton} justify="space-between" >
 
-                            <Button variant="contained" size="small" disabled>cancelar</Button>
-                            <Button variant="contained" size="small" color="secondary" type="submit"  disabled={buttonCreateEnabled} endIcon={loaderCreateDentist && <CircularProgress color={"inherit"} size={20} />}>Siguiente</Button>
+                            <Button component={Link} to="/dentist" variant="contained" size="small" disableElevation>cancelar</Button>
+                            <Button variant="contained" size="small" color="secondary" type="submit" disableElevation disabled={buttonCreateEnabled} endIcon={loaderCreateDentist && <CircularProgress color={"inherit"} size={20} />}>Siguiente</Button>
 
                         </Grid>
                     </Grid>
