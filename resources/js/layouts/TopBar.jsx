@@ -99,23 +99,7 @@ const TopBar = ({
           >
             <Avatar className={classes.avatar}>N</Avatar>
           </IconButton>
-          <Menu
-            id="menu-appbar"
-
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-
-          >
-            <MenuItem >Profile</MenuItem>
-            <MenuItem >My account</MenuItem>
-          </Menu>
+          
         </div>
       </Toolbar>
     </AppBar>
