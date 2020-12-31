@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const axiosInstance = axios.create({
-    baseURL: 'http://mvp-clinica-dental.test/api/v1/',
+    baseURL: '/api/v1/',
     timeout: 1000,
     headers: {
         'Content-Type': 'application/json',

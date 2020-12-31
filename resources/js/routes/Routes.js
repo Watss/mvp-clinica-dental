@@ -3,7 +3,7 @@ import  {Navigate}  from 'react-router-dom';
 import NotFoundView from '../layouts/NotFoundView';
 import Home from '../containers/Home';
 import MainLayout from '../layouts/MainLayout';
-import CreateDentist from '../containers/CreateDentist';
+import CreateDentist from '../containers/dentist/CreateDentist';
 
 const routes = [
     {
