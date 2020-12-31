@@ -28,7 +28,7 @@ class PatientsRequest extends FormRequest
             return [
                 'names' => ['required','max:50','min:2'],
                 'last_name' => ['required','max:50','min:2'],
-                'rut' => ['required','max:12','min:3','unique:Patient,rut'], // falta unique
+                'rut' => ['required','max:12','min:3','unique:patients,rut'],
                 'adress' => ['required','min:2'],
                 'phone_number' => ['required','min:9','max:12'],
                 'email' => ['email'],
