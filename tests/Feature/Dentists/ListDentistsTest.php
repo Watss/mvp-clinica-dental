@@ -38,6 +38,7 @@ class ListDentistsTest extends TestCase
                         'user' => $dentist->user->user,
                         'account_number' => $dentist->account_number,
                         'user_id' => (string) $dentist->user_id,
+                        'created_at' => $dentist->created_at
                     ],
                     'links' => [
                         'self' => route('dentists.show',$dentist)
@@ -78,6 +79,7 @@ class ListDentistsTest extends TestCase
                     'user' => $dentist->user->user,
                     'account_number' => $dentist->account_number,
                     'user_id' => (string) $dentist->user_id,
+                    'created_at' => $dentist->created_at
                 ],
                 'links' => [
                     'self' => route('dentists.show',$dentist)

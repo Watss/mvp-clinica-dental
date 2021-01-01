@@ -1,6 +1,6 @@
 import React from 'react';
 import Page from '../../components/Page';
-import FormDentist from './FormDentist';
+import FormDentist from '../../components/dentist/FormDentist';
 import { makeStyles ,Container} from '@material-ui/core';
 
 

@@ -4,6 +4,7 @@ import NotFoundView from '../layouts/NotFoundView';
 import Home from '../containers/Home';
 import MainLayout from '../layouts/MainLayout';
 import CreateDentist from '../containers/dentist/CreateDentist';
+import Dentist from '../containers/dentist/Dentist';
 
 const routes = [
     {
@@ -11,7 +12,8 @@ const routes = [
       element: <MainLayout />,
       children: [
         { path: '/', element: <Home /> },
-        { path: '/create/dentist', element: <CreateDentist /> },
+        { path: '/dentist/create', element: <CreateDentist /> },
+        { path: '/dentist', element: <Dentist /> },
         //  { path: 'login', element: <LoginView /> },
        // { path: 'register', element: <RegisterView /> },
         { path: '404', element: <NotFoundView /> },

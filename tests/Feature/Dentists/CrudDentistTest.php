@@ -60,11 +60,13 @@ class CrudDentistTest extends TestCase
             "account_number" => '8789427897289',
             'email' => 'testingemail@mail.cl',
             "phone_number" => "987654321",
+
         ];
 
         $response = $this->putJson(route('dentists.update',$dentist),$dentistData);
         $dentistData['rut'] = $dentist->user->rut;
         $dentistData['user_id'] = (string) $dentist->user_id;
+        $dentistData['created_at'] = $dentist->created_at;
 
         $response->assertExactJson([
             'success' => true,

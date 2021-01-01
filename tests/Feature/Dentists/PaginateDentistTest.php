@@ -20,6 +20,7 @@ class PaginateDentistTest extends TestCase
         $numberPage = 3;
 
         $dentists = factory(Dentist::class)->times(10)->create();
+        $dentists->created_at = "2020-12-12";
 
         $url = route('dentists.index', ['page[size]' => $size, 'page[number]' => $numberPage]);
         

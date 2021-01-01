@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import {Link} from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -81,7 +82,7 @@ const TopBar = ({
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Odonotologos</MenuItem>
+            <MenuItem component={Link} to="/dentist" onClick={handleClose}>Odonotologos</MenuItem>
           </Menu>
         </Box>
 
