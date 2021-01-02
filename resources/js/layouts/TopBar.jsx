@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   root: {},
 
   logoColor: {
-    color: theme.palette.text.logo
+    color:'black'
   },
   avatar: {
     backgroundColor: theme.palette.secondary.main,
@@ -63,8 +63,8 @@ const TopBar = ({
   return (
     <AppBar
       className={clsx(classes.root, className)}
-      elevation={1}
-      color="primary"
+      elevation={0}
+      color="inherit"
     >
       <Toolbar variant="dense">
         <RouterLink to="/">

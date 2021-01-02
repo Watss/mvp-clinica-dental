@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Page from '../../components/Page';
-import { makeStyles, Container, Paper, Box, Grid, Button } from '@material-ui/core';
+import { makeStyles, Container, Paper, Box, Grid, Button, Fab, Tooltip } from '@material-ui/core';
 import axiosInstance from '../../utils/axios';
 import ListDentist from '../../components/dentist/ListDentist';
-import {Link} from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import AddIcon from '@material-ui/icons/Add';
 const useStyles = makeStyles((theme) => ({
     formUser: {
 
@@ -26,6 +26,18 @@ const useStyles = makeStyles((theme) => ({
 
     Avatar: {
         background: theme.palette.secondary.main
+
+    },
+    fab: {
+        position: 'absolute',
+        bottom: theme.spacing(4),
+        right: theme.spacing(4),
+        background: 'white'
+    },
+    'listItem': {
+        '&:hover' : {
+            borderRadius: '50px'
+        }
 
     }
 }));
@@ -60,17 +72,21 @@ const Dentist = () => {
 
     return (
         <Page className={classes.root} title="ListeDentist">
+            <Tooltip title="Nuevo dentista" placement="bottom">
+                <Fab color="inherit" size="medium" aria-label="add" className={classes.fab} component={Link} to="/dentist/create">
+                    <AddIcon />
+                </Fab>
+            </Tooltip>
             <Container className={classes.container}>
-                <Paper>
+                <Paper elevation={0}>
                     <Container>
                         <Grid container>
-                            <Grid item lg={6}><Box fontSize="h5.fontSize" fontWeight="medium" fontFamily="fontFamily" mt={5} mb={5}>Odontologos</Box></Grid>
+
                             <Grid item container lg={6} container
                                 direction="row"
                                 justify="flex-end"
                                 alignItems="center"
                             >
-                                 <Button component={Link} to="/dentist/create" type="button" size="small" color={'secondary'} variant="contained" disableElevation >Registrar odontologo</Button>
                             </Grid>
                         </Grid>
                     </Container>
@@ -80,7 +96,7 @@ const Dentist = () => {
                     <ListDentist classes={classes} dentists={dentists}></ListDentist>
                 </Paper>
             </Container>
-        </Page>
+        </Page >
 
     );
 }
