@@ -10,7 +10,7 @@ const ItemDentist = ({ dentist, classes }) => {
     moment.locale("es");
     return (
 
-        <ListItem button>
+        <ListItem button className={classes.listItem}>
             <ListItemAvatar>
                 <Avatar className={classes.Avatar} >{dentist.attributes.names.charAt(0).toUpperCase()}</Avatar>
             </ListItemAvatar>

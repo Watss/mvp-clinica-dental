@@ -89,7 +89,7 @@ export const FormDentist = ({ classes }) => {
     }
 
     return (
-        <Paper>
+        <Paper elevation={0}>
             <form onSubmit={sendForm}>
                 <Container>
                     <Grid container >
@@ -215,7 +215,7 @@ export const FormDentist = ({ classes }) => {
                         </Grid>
                         <Grid container item lg={6} justify="flex-end" direction="row">
 
-                            <Paper elevation={1} className={classes.paperFormUser}>
+                            <Paper elevation={0} className={classes.paperFormUser}>
 
                                 <Grid container className={classes.formUser} >
                                     <Alert severity="info" className={classes.alertInfo}>
