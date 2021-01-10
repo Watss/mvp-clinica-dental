@@ -42,10 +42,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Dentist = () => {
+const Patients = () => {
 
     const classes = useStyles();
-    const [dentists, setDentists] = useState([])
+    const [Patients, setPatients] = useState([])
 
 
 
@@ -54,9 +54,9 @@ const Dentist = () => {
         async function fetchDentists() {
 
             try {
-                const res = await axiosInstance.get('dentists')
+                const res = await axiosInstance.get('patients')
                 const { data } = res.data
-                setDentists(data)
+                setPatients(data)
 
 
             } catch (error) {
@@ -72,7 +72,7 @@ const Dentist = () => {
 
     return (
         <Page className={classes.root} title="ListPatients">
-            <Tooltip title="Nuevo dentista" placement="bottom">
+            <Tooltip title="Nuevo Paciente" placement="bottom">
                 <Fab color="inherit" size="medium" aria-label="add" className={classes.fab} component={Link} to="/patients/create">
                     <AddIcon />
                 </Fab>
@@ -93,7 +93,7 @@ const Dentist = () => {
 
 
 
-                    <ListPatients classes={classes} dentists={dentists}></ListPatients>
+                    <ListPatients classes={classes} Patients={Patients}></ListPatients>
                 </Paper>
             </Container>
         </Page >
@@ -101,4 +101,4 @@ const Dentist = () => {
     );
 }
 
-export default Dentist;
+export default Patients;
