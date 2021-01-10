@@ -49,7 +49,7 @@ export const FormPatients = ({ classes }) => {
                     "city":error.response.data.errors.city ? error.response.data.errors.city:[],
                 }
             )
-            setLoaderCreatePatients(false)
+            setButtonCreateEnabled(false)
         }
 
 
@@ -105,7 +105,7 @@ export const FormPatients = ({ classes }) => {
                                     id="names"
                                     label="Nombres"
                                     defaultValue=""
-                                    helperText={errors.names.length === 0 ? "Ej : Alejando Andres" : errors.names}
+                                    helperText={errors.names.length === 0 ? "Ej : Pablo Luna" : errors.names}
                                     variant="outlined"
                                     size="small"
                                     fullWidth
@@ -119,8 +119,8 @@ export const FormPatients = ({ classes }) => {
                                     id="last_names"
                                     label="Apellidos"
                                     defaultValue=""
-                                    helperText={errors.rut.length === 0 ? "Ej : Constanzo Rivas" : errors.rut}
-                                    helperText="Ej : Contanzo Rivas"
+                                    helperText={errors.rut.length === 0 ? "Ej : Arteaga XD" : errors.rut}
+                                    helperText="Arteaga XD"
                                     variant="outlined"
                                     size="small"
                                     fullWidth
@@ -138,7 +138,7 @@ export const FormPatients = ({ classes }) => {
                                         id="adress"
                                         label="Dirección"
                                         defaultValue=""
-                                        helperText={errors.adress.length === 0 ? "Ej : Pje Cau Cau" : errors.adress}
+                                        helperText={errors.adress.length === 0 ? "Ej : 5 de abril 1071" : errors.adress}
                                         variant="outlined"
                                         size="small"
                                         onChange={handleInputChange}
@@ -153,7 +153,23 @@ export const FormPatients = ({ classes }) => {
                                         id="phone_number"
                                         label="Telefono"
                                         defaultValue=""
-                                        helperText={errors.phone_number.length === 0 ? "Ej : 95443443" : errors.phone_number}
+                                        helperText={errors.phone_number.length === 0 ? "Ej : 999999999" : errors.phone_number}
+                                        variant="outlined"
+                                        size="small"
+                                        onChange={handleInputChange}
+                                        required
+
+                                    />
+                                </Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        error={errors.city.length === 0 ? false : true}
+                                        name="city"
+                                        className={classes.textField}
+                                        id="city"
+                                        label="city"
+                                        defaultValue=""
+                                        helperText={errors.city.length === 0 ? "Chillan" : errors.city}
                                         variant="outlined"
                                         size="small"
                                         onChange={handleInputChange}
@@ -163,16 +179,7 @@ export const FormPatients = ({ classes }) => {
                                 </Grid>
 
                                 <Grid item lg={12}>
-                                    <Box display="flex" alignContent="flex-row">
 
-                                        <Checkbox
-                                            disabled
-                                            checked={checked}
-                                            onChange={handleChange}
-                                            inputProps={{ 'aria-label': 'primary checkbox' }}
-                                        />
-                                        <Box className={classes.labelCheckbox}> Asignar horario predeterminado</Box>
-                                    </Box>
                                 </Grid>
                             </Grid>
 
@@ -182,7 +189,7 @@ export const FormPatients = ({ classes }) => {
                         <Grid container item lg={12} className={classes.actionsButton} justify="space-between" >
 
                             <Button component={Link} to="/patients" variant="contained" size="small" disableElevation>cancelar</Button>
-                            <Button variant="contained" size="small" color="secondary" type="submit" disableElevation disabled={buttonCreateEnabled} endIcon={loaderCreatePatients && <CircularProgress color={"inherit"} size={20} />}>Siguiente</Button>
+                            <Button variant="contained" size="small" color="secondary" type="submit"  disableElevation  endIcon={loaderCreatePatients && <CircularProgress color={"inherit"} size={20} />}>Siguiente</Button>
 
                         </Grid>
                     </Grid>
