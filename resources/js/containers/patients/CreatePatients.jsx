@@ -1,6 +1,6 @@
 import React from 'react';
 import Page from '../../components/Page';
-import FormDentist from '../../components/patients/FormPatients';
+import FormPatients from '../../components/patients/FormPatients';
 import { makeStyles ,Container} from '@material-ui/core';
 
 
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: 70,
         paddingRight: 70
     },
-    containerFormDentist: {
+    containerFormPatients: {
         padding: 0,
 
     },
@@ -45,19 +45,19 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const CreateDentist = () => {
+const CreatePatients = () => {
 
     const classes = useStyles();
 
 
     return (
-        <Page className={classes.root} title="CreateDentist">
+        <Page className={classes.root} title="CreatePatients">
             <Container className={classes.container}>
-                <FormDentist classes={classes}></FormDentist>
+                <FormPatients classes={classes}></FormPatients>
             </Container>
         </Page>
 
     );
 }
 
-export default CreateDentist;
+export default CreatePatients;

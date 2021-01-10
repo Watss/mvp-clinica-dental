@@ -5,7 +5,7 @@ import ItemPatients from './ItemPatients';
 
 
 
-const ListDentist = ({ dentists, classes }) => {
+const ListDentist = ({ Patients, classes }) => {
 
     return (
         <List dense={true}>
@@ -13,8 +13,8 @@ const ListDentist = ({ dentists, classes }) => {
 
                 <Box fontSize="h6.fontSize" fontWeight="medium" fontFamily="fontFamily" mt={2} mb={2}>Pacientes</Box>
             </ListSubheader>
-            {dentists.map((dentist, index) => {
-                return <ItemPatients key={index} dentist={dentist} classes={classes}></ItemPatients>
+            {Patients.map((Patients, index) => {
+                return <ItemPatients key={index} Patients={Patients} classes={classes}></ItemPatients>
             })}
 
         </List>

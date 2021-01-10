@@ -5,16 +5,16 @@ import moment from 'moment'
 
 
 
-const ItemDentist = ({ dentist, classes }) => {
+const ItemPatients = ({ Patients, classes }) => {
 
     moment.locale("es");
     return (
 
         <ListItem button className={classes.listItem}>
             <ListItemAvatar>
-                <Avatar className={classes.Avatar} >{dentist.attributes.names.charAt(0).toUpperCase()}</Avatar>
+                <Avatar className={classes.Avatar} >{Patients.attributes.names.charAt(0).toUpperCase()}</Avatar>
             </ListItemAvatar>
-            <ListItemText secondary={moment(dentist.attributes.created_at).fromNow()}>{dentist.attributes.names} {dentist.attributes.last_name}  </ListItemText>
+            <ListItemText secondary={moment(Patients.attributes.created_at).fromNow()}>{Patients.attributes.names} {Patients.attributes.last_name}  </ListItemText>
             <ListItemSecondaryAction>
                 <IconButton disabled>
                     <MoreVertIcon fontSize="small"></MoreVertIcon>
@@ -26,4 +26,4 @@ const ItemDentist = ({ dentist, classes }) => {
     );
 }
 
-export default ItemDentist;
+export default ItemPatients;
