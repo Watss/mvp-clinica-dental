@@ -52,26 +52,19 @@ const TextFieldHour = (props) => {
         switch (type) {
 
             case "start_work":
-
-
-
                 start_work = moment(work_day.start_work, 'HH:mm')
                 end_work = moment(work_day.end_work, 'HH:mm')
                 break
 
             case "end_work":
-
                 start_work = schedule.start_work === "" ? moment(work_day.start_work, 'HH:mm') : moment(schedule.start_work, 'HH:mm')
                 end_work = moment(work_day.end_work, 'HH:mm')
                 break
-
             case "start_launch_time":
-
                 start_work = moment(work_day.start_work, 'HH:mm')
                 end_work = moment(work_day.end_work, 'HH:mm')
 
                 break
-
             case "end_launch_time":
 
                 start_work = schedule.start_launch_time === "" ? moment(work_day.start_work, 'HH:mm') : moment(schedule.start_launch_time, 'HH:mm')
