@@ -45,7 +45,7 @@ const TextFieldHour = (props) => {
                     <em>None</em>
                 </MenuItem>
                 {listHours.map((hour, index) => {
-                    return <MenuItem key={index} value={hour.format('h:mm a')}>{hour.format('h:mm a')}</MenuItem>
+                    return <MenuItem key={index} value={hour.format('HH:mm a')}>{hour.format('h:mm a')}</MenuItem>
                 })}
 
 
