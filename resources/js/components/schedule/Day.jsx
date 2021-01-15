@@ -41,7 +41,53 @@ const Day = (props) => {
     })
 
 
+    const getRangeHours = (type) => {
 
+            let hours = [];
+            var start_work = undefined
+            var end_work = undefined
+    
+            switch (type) {
+    
+                case "start_work":
+                    start_work = moment(workDay.start_work, 'HH:mm')
+                    end_work = moment(workDay.end_work, 'HH:mm')
+                    break
+    
+                case "end_work":
+                    start_work = schedule.start_work === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_work, 'HH:mm')
+                    end_work = moment(workDay.end_work, 'HH:mm')
+                    break
+                case "start_launch_time":
+                    start_work = moment(workDay.start_work, 'HH:mm')
+                    end_work = moment(workDay.end_work, 'HH:mm')
+    
+                    break
+                case "end_launch_time":
+    
+                    start_work = schedule.start_launch_time === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_launch_time, 'HH:mm')
+                    end_work = moment(workDay.end_work, 'HH:mm')
+                    break
+                default:
+                    break
+            }
+    
+            
+            var current_time = start_work
+    
+            while (current_time < end_work) {
+    
+                const time = current_time.add(30, 'minutes')
+    
+                current_time = time
+    
+                hours.push(moment(time))
+            }
+    
+            return hours
+    
+        
+    }
 
     const handleChangeChecked = (event) => {
 
@@ -49,10 +95,6 @@ const Day = (props) => {
         setSchedule(target_schedule)
         props.onChange(target_schedule)
     };
-
-    console.log(schedule);
-
-
 
 
     const handleChangeTime = (time, type) => {
@@ -68,18 +110,7 @@ const Day = (props) => {
 
         setSchedule(target_schedule)
 
-
-
-
         props.onChange(target_schedule)
-
-
-
-
-
-
-
-
     };
 
 
@@ -88,8 +119,9 @@ const Day = (props) => {
 
         <Paper className={!schedule.work ? classes.paper : classes.paperDisabled} elevation={1}  >
             <Box fontFamily="fontFamily" fontSize="h6.fontSize" mb={2} className={schedule.work ? classes.titleDisabled : ""}>{schedule.day_name}{schedule.end_work}</Box>
-            <TextFieldHour interval={10} type="start_work" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} work_day={workDay} schedule={schedule}  ></TextFieldHour>
-            <TextFieldHour interval={10} type="end_work" label="Termino" work={schedule.work} ChangeTime={handleChangeTime} work_day={workDay} schedule={schedule} ></TextFieldHour>
+
+            <TextFieldHour type="start_work" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={ getRangeHours('start_work') }></TextFieldHour>
+            <TextFieldHour type="end_work" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_work} listHours={ getRangeHours('end_work') }></TextFieldHour>
             <FormControlLabel
                 control={
                     <Checkbox
@@ -102,8 +134,8 @@ const Day = (props) => {
                 }
                 label="Descanso"
             />
-            <TextFieldHour interval={10} type="start_launch_time" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} work_day={workDay} schedule={schedule}  ></TextFieldHour>
-            <TextFieldHour interval={10} type="end_launch_time" label="Termino" work={schedule.work} ChangeTime={handleChangeTime} work_day={workDay} schedule={schedule} ></TextFieldHour>
+            <TextFieldHour type="start_launch_time" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_launch_time} listHours={ getRangeHours('start_launch_time') }></TextFieldHour>
+            <TextFieldHour type="end_launch_time" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_launch_time} listHours={ getRangeHours('end_launch_time') }></TextFieldHour>
             <FormControlLabel
                 control={
                     <Checkbox
