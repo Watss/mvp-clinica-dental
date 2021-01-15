@@ -46,14 +46,14 @@ const Day = (props) => {
             let hours = [];
             var start_work = undefined
             var end_work = undefined
-    
+
             switch (type) {
-    
+
                 case "start_work":
                     start_work = moment(workDay.start_work, 'HH:mm')
                     end_work = moment(workDay.end_work, 'HH:mm')
                     break
-    
+
                 case "end_work":
                     start_work = schedule.start_work === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_work, 'HH:mm')
                     end_work = moment(workDay.end_work, 'HH:mm')
@@ -61,32 +61,32 @@ const Day = (props) => {
                 case "start_launch_time":
                     start_work = moment(workDay.start_work, 'HH:mm')
                     end_work = moment(workDay.end_work, 'HH:mm')
-    
+
                     break
                 case "end_launch_time":
-    
+
                     start_work = schedule.start_launch_time === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_launch_time, 'HH:mm')
                     end_work = moment(workDay.end_work, 'HH:mm')
                     break
                 default:
                     break
             }
-    
-            
-            var current_time = start_work
-    
+
+
+            let current_time = start_work
+
             while (current_time < end_work) {
-    
-                const time = current_time.add(30, 'minutes')
-    
+
+                let time = current_time.add(30, 'minutes')
+
                 current_time = time
-    
+
                 hours.push(moment(time))
             }
-    
+
             return hours
-    
-        
+
+
     }
 
     const handleChangeChecked = (event) => {
@@ -97,18 +97,18 @@ const Day = (props) => {
     };
 
 
-    const handleChangeTime = (time, type) => {
+    const handleChangeTime = async(time, type) => {
 
         let newSchedule = { ...schedule };
 
-        if (type === 'start_work') {
+        if (type === 'start_work') {  // restable el select 'end work' cuando la hora de de inicio es sekleccionada
             newSchedule = { ...newSchedule, end_work: "" };
 
         }
 
         const target_schedule = { ...newSchedule, [type]: time }
 
-        setSchedule(target_schedule)
+        await setSchedule(target_schedule)
 
         props.onChange(target_schedule)
     };
@@ -117,8 +117,8 @@ const Day = (props) => {
     // 00000008  start_launch_time
     return (
 
-        <Paper className={!schedule.work ? classes.paper : classes.paperDisabled} elevation={1}  >
-            <Box fontFamily="fontFamily" fontSize="h6.fontSize" mb={2} className={schedule.work ? classes.titleDisabled : ""}>{schedule.day_name}{schedule.end_work}</Box>
+        <Paper className={!schedule.work ? classes.paper : classes.paperDisabled} elevation={1} >
+            <Box fontFamily="fontFamily" fontSize="h6.fontSize" mb={2} className={schedule.work ? classes.titleDisabled : ""}>{schedule.day_name}</Box>
 
             <TextFieldHour type="start_work" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={ getRangeHours('start_work') }></TextFieldHour>
             <TextFieldHour type="end_work" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_work} listHours={ getRangeHours('end_work') }></TextFieldHour>
