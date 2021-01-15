@@ -35,7 +35,7 @@ const Day = (props) => {
         end_work: "",
         launch_time: false,
         start_lauch_time: "",
-        end_lauch_time: "",
+        end_launch_time: "",
         work: false,
 
     })
@@ -43,48 +43,48 @@ const Day = (props) => {
 
     const getRangeHours = (type) => {
 
-            let hours = [];
-            var start_work = undefined
-            var end_work = undefined
+        let hours = [];
+        var start_work = undefined
+        var end_work = undefined
 
-            switch (type) {
+        switch (type) {
 
-                case "start_work":
-                    start_work = moment(workDay.start_work, 'HH:mm')
-                    end_work = moment(workDay.end_work, 'HH:mm')
-                    break
+            case "start_work":
+                start_work = moment(workDay.start_work, 'HH:mm')
+                end_work = moment(workDay.end_work, 'HH:mm')
+                break
 
-                case "end_work":
-                    start_work = schedule.start_work === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_work, 'HH:mm')
-                    end_work = moment(workDay.end_work, 'HH:mm')
-                    break
-                case "start_launch_time":
-                    start_work = moment(workDay.start_work, 'HH:mm')
-                    end_work = moment(workDay.end_work, 'HH:mm')
+            case "end_work":
+                start_work = schedule.start_work === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_work, 'HH:mm')
+                end_work = moment(workDay.end_work, 'HH:mm')
+                break
+            case "start_launch_time":
+                start_work = schedule.start_work === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_work, 'HH:mm')
+                end_work = schedule.end_work === "" ? moment(workDay.end_work, 'HH:mm') : moment(schedule.end_work, 'HH:mm')
 
-                    break
-                case "end_launch_time":
+                break
+            case "":
 
-                    start_work = schedule.start_launch_time === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_launch_time, 'HH:mm')
-                    end_work = moment(workDay.end_work, 'HH:mm')
-                    break
-                default:
-                    break
-            }
+                start_work = schedule.start_launch_time === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_launch_time, 'HH:mm')
+                end_work = moment(workDay.end_work, 'HH:mm')
+                break
+            default:
+                break
+        }
 
 
-            let current_time = start_work
+        let current_time = start_work
 
-            while (current_time < end_work) {
+        while (current_time < end_work) {
 
-                let time = current_time.add(30, 'minutes')
+            let time = current_time.add(30, 'minutes')
 
-                current_time = time
+            current_time = time
 
-                hours.push(moment(time))
-            }
+            hours.push(moment(time))
+        }
 
-            return hours
+        return hours
 
 
     }
@@ -97,7 +97,7 @@ const Day = (props) => {
     };
 
 
-    const handleChangeTime = async(time, type) => {
+    const handleChangeTime =  (time, type) => {
 
         let newSchedule = { ...schedule };
 
@@ -106,9 +106,14 @@ const Day = (props) => {
 
         }
 
+        if (type === 'start_launch_time') {  // restable el select 'end work' cuando la hora de de inicio es sekleccionada
+            newSchedule = { ...newSchedule, end_lauch_time: "" };
+
+        }
+
         const target_schedule = { ...newSchedule, [type]: time }
 
-        await setSchedule(target_schedule)
+        setSchedule(target_schedule)
 
         props.onChange(target_schedule)
     };
@@ -120,8 +125,8 @@ const Day = (props) => {
         <Paper className={!schedule.work ? classes.paper : classes.paperDisabled} elevation={1} >
             <Box fontFamily="fontFamily" fontSize="h6.fontSize" mb={2} className={schedule.work ? classes.titleDisabled : ""}>{schedule.day_name}</Box>
 
-            <TextFieldHour type="start_work" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={ getRangeHours('start_work') }></TextFieldHour>
-            <TextFieldHour type="end_work" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_work} listHours={ getRangeHours('end_work') }></TextFieldHour>
+            <TextFieldHour type="start_work" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={getRangeHours('start_work')}></TextFieldHour>
+            <TextFieldHour type="end_work" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_work} listHours={getRangeHours('end_work')}></TextFieldHour>
             <FormControlLabel
                 control={
                     <Checkbox
@@ -134,8 +139,8 @@ const Day = (props) => {
                 }
                 label="Descanso"
             />
-            <TextFieldHour type="start_launch_time" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_lauch_time} listHours={ getRangeHours('start_launch_time') }></TextFieldHour>
-            <TextFieldHour type="end_launch_time" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_lauch_time} listHours={ getRangeHours('end_launch_time') }></TextFieldHour>
+            <TextFieldHour type="start_launch_time" label="Inicio " work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_lauch_time} listHours={getRangeHours('start_launch_time')}></TextFieldHour>
+            <TextFieldHour type="end_launch_time" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_launch_time} listHours={getRangeHours('end_launch_time')}></TextFieldHour>
             <FormControlLabel
                 control={
                     <Checkbox
