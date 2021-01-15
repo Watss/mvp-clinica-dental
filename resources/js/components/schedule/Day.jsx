@@ -125,7 +125,7 @@ const Day = (props) => {
         <Paper className={!schedule.work ? classes.paper : classes.paperDisabled} elevation={1} >
             <Box fontFamily="fontFamily" fontSize="h6.fontSize" mb={2} className={schedule.work ? classes.titleDisabled : ""}>{schedule.day_name}</Box>
 
-            <TextFieldHour type="start_work" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={getRangeHours('start_work')}></TextFieldHour>
+            <TextFieldHour type="start_work" label="Inicio"  work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={getRangeHours('start_work')}></TextFieldHour>
             <TextFieldHour type="end_work" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_work} listHours={getRangeHours('end_work')}></TextFieldHour>
             <FormControlLabel
                 control={
@@ -139,8 +139,8 @@ const Day = (props) => {
                 }
                 label="Descanso"
             />
-            <TextFieldHour type="start_launch_time" label="Inicio " work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_launch_time} listHours={getRangeHours('start_launch_time')}></TextFieldHour>
-            <TextFieldHour type="end_launch_time" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_launch_time} listHours={getRangeHours('end_launch_time')}></TextFieldHour>
+            <TextFieldHour type="start_launch_time" label="Inicio " launchTime={schedule.launch_time}  work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_launch_time} listHours={getRangeHours('start_launch_time')}></TextFieldHour>
+            <TextFieldHour type="end_launch_time" label="Fin" launchTime={schedule.launch_time} work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_launch_time} listHours={getRangeHours('end_launch_time')}></TextFieldHour>
             <FormControlLabel
                 control={
                     <Checkbox

@@ -19,7 +19,8 @@ const TextFieldHour = (props) => {
         inputValue,
         label,
         work,
-        ChangeTime
+        ChangeTime,
+        launchTime
     } = props
 
     const classes = useStyles()
@@ -33,7 +34,7 @@ const TextFieldHour = (props) => {
         <FormControl variant="outlined" className={classes.formControl} fullWidth size="small">
             <InputLabel id="demo-simple-select-outlined-label" color={'secondary'}>{label}</InputLabel>
             <Select
-                disabled={work ? true : false}
+                disabled={work || launchTime ? true : false}
                 fullWidth
                 labelId="demo-simple-select-outlined-label"
                 id={`select-hour-${type}`}
