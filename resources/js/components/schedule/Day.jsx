@@ -34,7 +34,7 @@ const Day = (props) => {
         start_work: "",
         end_work: "",
         launch_time: false,
-        start_lauch_time: "",
+        start_launch_time: "",
         end_launch_time: "",
         work: false,
 
@@ -63,10 +63,10 @@ const Day = (props) => {
                 end_work = schedule.end_work === "" ? moment(workDay.end_work, 'HH:mm') : moment(schedule.end_work, 'HH:mm')
 
                 break
-            case "":
+            case "end_launch_time":
 
                 start_work = schedule.start_launch_time === "" ? moment(workDay.start_work, 'HH:mm') : moment(schedule.start_launch_time, 'HH:mm')
-                end_work = moment(workDay.end_work, 'HH:mm')
+                end_work = moment(schedule.end_work, 'HH:mm')
                 break
             default:
                 break
@@ -97,7 +97,7 @@ const Day = (props) => {
     };
 
 
-    const handleChangeTime =  (time, type) => {
+    const handleChangeTime = (time, type) => {
 
         let newSchedule = { ...schedule };
 
@@ -105,11 +105,11 @@ const Day = (props) => {
             newSchedule = { ...newSchedule, end_work: "" };
 
         }
-
         if (type === 'start_launch_time') {  // restable el select 'end work' cuando la hora de de inicio es sekleccionada
-            newSchedule = { ...newSchedule, end_lauch_time: "" };
+            newSchedule = { ...newSchedule, end_launch_time: "" };
 
         }
+
 
         const target_schedule = { ...newSchedule, [type]: time }
 
@@ -139,7 +139,7 @@ const Day = (props) => {
                 }
                 label="Descanso"
             />
-            <TextFieldHour type="start_launch_time" label="Inicio " work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_lauch_time} listHours={getRangeHours('start_launch_time')}></TextFieldHour>
+            <TextFieldHour type="start_launch_time" label="Inicio " work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_launch_time} listHours={getRangeHours('start_launch_time')}></TextFieldHour>
             <TextFieldHour type="end_launch_time" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_launch_time} listHours={getRangeHours('end_launch_time')}></TextFieldHour>
             <FormControlLabel
                 control={
