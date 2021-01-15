@@ -18,14 +18,16 @@ const TextFieldHour = (props) => {
         type,
         inputValue,
         label,
-        work
+        work,
+        ChangeTime
     } = props
 
     const classes = useStyles()
 
     const handleChange = event => {
-        props.ChangeTime(event.target.value, type)
+        ChangeTime(event.target.value, type)
     }
+
 
     return (
         <FormControl variant="outlined" className={classes.formControl} fullWidth size="small">
@@ -41,11 +43,11 @@ const TextFieldHour = (props) => {
                 color={"secondary"}
 
             >
-                <MenuItem value={undefined}>
+                <MenuItem value={""}>
                     <em>None</em>
                 </MenuItem>
                 {listHours.map((hour, index) => {
-                    return <MenuItem key={index} value={hour.format('HH:mm a')}>{hour.format('h:mm a')}</MenuItem>
+                    return <MenuItem key={index} value={hour.format('HH:mm')}>{hour.format('HH:mm a')}</MenuItem>
                 })}
 
 
