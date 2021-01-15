@@ -134,8 +134,8 @@ const Day = (props) => {
                 }
                 label="Descanso"
             />
-            <TextFieldHour type="start_launch_time" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_launch_time} listHours={ getRangeHours('start_launch_time') }></TextFieldHour>
-            <TextFieldHour type="end_launch_time" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_launch_time} listHours={ getRangeHours('end_launch_time') }></TextFieldHour>
+            <TextFieldHour type="start_launch_time" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_lauch_time} listHours={ getRangeHours('start_launch_time') }></TextFieldHour>
+            <TextFieldHour type="end_launch_time" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_lauch_time} listHours={ getRangeHours('end_launch_time') }></TextFieldHour>
             <FormControlLabel
                 control={
                     <Checkbox
