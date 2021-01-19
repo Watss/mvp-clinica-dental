@@ -26,31 +26,56 @@ const CreateSchedule = () => {
 
     const [open, setOpen] = useState(false);
     const [schedule, setSchedule] = useState({})
-    const [showInputEditName, setShowInputEditName] = useState(false)
     const [nameSchedule, setNameSchedule] = useState("")
+    const [showDialogCopyDays, setShowDialogCopyDays] = useState(false)
+    const [dayCompleted, setDayCompleted] = useState(null)
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const handleChange = (scheduleDay, completed, valueDay) => {
 
-    const handleChange = (scheduleDay) => {
+        if (completed && dayCompleted === null) {
 
-        setShowInputEditName(false)
+            setDayCompleted(valueDay)
+
+            setShowDialogCopyDays(true)
+        }
+
         const target_schedule = { ...schedule, [scheduleDay.day_name]: scheduleDay }
-        console.log(target_schedule);
-        setSchedule(target_schedule)
+
+        setSchedule(target_schedule);
 
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = () => { };
+
+    const handleAcceptDialog = (daysSelected) => {
+
+        let daysSelectedChecked = getDaySelected(daysSelected); // Devuelve checked seleccionados
+
+        let objectDaySelected = daysSelected.find(day => day.id === dayCompleted) // Busca el objeto del dia completado
+
+        let objectToCopy = Object.values(schedule).find(day => day.day_name === objectDaySelected.name) // Obtiene el objeto a copiar
 
 
-    };
+        const dayCopied = daysSelectedChecked.reduce((acc, day) => { // Crea copias del dia seleccionado por primera vez
+            return { ...acc, [day.name]: { ...objectToCopy, day_name: day.name } }
+        }, {})
 
+        setSchedule({ ...schedule, ...dayCopied })
+
+
+        setShowDialogCopyDays(false)
+
+    }
+
+
+    const getDaySelected = (arr) => {
+        return arr.filter(dia => (dia.checked && dia.id))
+    }
+
+    const indexedSchedule = Object.entries(schedule).length === 0 && Object.values(schedule).reduce((acc, el) => ({...acc,[el.day_name] : el}),{})
+
+    console.log(indexedSchedule("Lunes"));
 
     const classes = useStyles()
 
@@ -60,27 +85,32 @@ const CreateSchedule = () => {
             <Container className={classes.container} >
                 <Grid container spacing={1}>
                     <Grid item lg={12}>
-                        {showInputEditName &&
 
-                            <Box mt={2} mb={2}>
-                                <TextField className={classes.nameTextField} onChange={(event) => setNameSchedule(event.target.value)} value={nameSchedule} id="outlined-basic" label="Nombre horario" variant="outlined" size="small" />
-                            </Box>
-                        }
-
-                        {!showInputEditName &&
-                            <Box onClick={() => setShowInputEditName(true)} fontSize="h6.fontSize" fontWeight="medium" fontFamily="fontFamily" mt={2} mb={2}>
-                                { nameSchedule ? nameSchedule :  (`Presione para ingresar el nombre del horario ` )}
-                            </Box>
-                        }
-
+                        <Box mt={2} mb={2}>
+                            <TextField className={classes.nameTextField} onChange={(event) => setNameSchedule(event.target.value)} value={nameSchedule} id="outlined-basic" label="Agregar nombre" color="secondary" />
+                        </Box>
 
                     </Grid>
-                    <Grid item container lg={12} md={12} mt={5}>
-                        <Grid item lg={2} md={2}>
-                            <Day name="Lunes" onChange={handleChange} ></Day>
+                    <Grid item container lg={12} md={12} mt={5} spacing={1} >
+                        <Grid item lg={2} md={2} >
+                            <Day name="Lunes" onChange={handleChange} value={0}  ></Day>
                         </Grid>
+                        <Grid item lg={2} md={2}>
+                            <Day name="Martes" onChange={handleChange} value={1}  ></Day>
+                        </Grid>
+                        <Grid item lg={2} md={2}>
+                            <Day name="Miercoles" onChange={handleChange} value={2}   ></Day>
+                        </Grid>
+                        <Grid item lg={2} md={2}>
+                            <Day name="Jueves" onChange={handleChange} value={3} ></Day>
+                        </Grid>
+                        <Grid item lg={2} md={2}>
+                            <Day name="Viernes" onChange={handleChange} value={4} ></Day>
+                            <Grid item lg={2} md={2}>
+                                <Day name="Sábado" onChange={handleChange} value={5} ></Day>
+                            </Grid>
 
-
+                        </Grid>
 
                     </Grid>
                     <Grid item lg={12} mt={12} container alignItems="flex-end" justify="flex-end" >
@@ -93,7 +123,7 @@ const CreateSchedule = () => {
 
             </Container>
 
-            <DialogRepeatDay></DialogRepeatDay>
+            <DialogRepeatDay show={showDialogCopyDays} AcceptDialog={handleAcceptDialog} dayCompleted={dayCompleted}></DialogRepeatDay>
         </Page>
 
     );

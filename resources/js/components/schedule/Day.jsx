@@ -18,10 +18,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Day = (props) => {
 
-    const { name, DoesNotAttend } = props
+    const { name, DoesNotAttend,value,data} = props
     const classes = useStyles()
     const [does_not_attend, setDoesNotAttend] = useState(DoesNotAttend)
     const [firtsHourSelected, setFirtsHourSelected] = useState(false)
+    const [dayCompleted, setDayCompleted] = useState(false)
 
 
     const [workDay, setWorkDay] = useState({
@@ -40,6 +41,9 @@ const Day = (props) => {
 
     })
 
+    useEffect(()=>{
+        console.log(data);
+    },[])
 
     const getRangeHours = (type) => {
 
@@ -97,7 +101,7 @@ const Day = (props) => {
     };
 
 
-    const handleChangeTime = (time, type) => {
+    const handleChangeTime = (time, type) => { // No pudimos ejecutar dos setSchedule
 
         let newSchedule = { ...schedule };
 
@@ -105,24 +109,43 @@ const Day = (props) => {
             newSchedule = { ...newSchedule, end_work: "" };
 
         }
-        if (type === 'start_launch_time') {  // restable el select 'end work' cuando la hora de de inicio es sekleccionada
+        if (type === 'start_launch_time') {  // restable el select 'end launch time' cuando la hora de de inicio es sekleccionada
             newSchedule = { ...newSchedule, end_launch_time: "" };
 
         }
 
 
-        const target_schedule = { ...newSchedule, [type]: time }
+        let target_schedule = { ...newSchedule, [type]: time }
+
 
         setSchedule(target_schedule)
 
-        props.onChange(target_schedule)
+        if(isSheduleComplete(schedule)){ // Verifica si hay un dia completado
+
+           setDayCompleted(true)
+        }
+
+
+        props.onChange(target_schedule,dayCompleted,value)
     };
+
+
+    const isSheduleComplete = (schedule)=>{
+
+        if(schedule.start_work === "" || schedule.end_work === "" || schedule.start_launch_work === ""  || schedule.end_launch_work === ""  ){
+            return false
+        }else{
+            return true
+        }
+
+
+    }
 
 
     // 00000008  start_launch_time
     return (
 
-        <Paper className={!schedule.work ? classes.paper : classes.paperDisabled} elevation={1} >
+        <Paper className={!schedule.work ? classes.paper : classes.paperDisabled} elevation={1}  >
             <Box fontFamily="fontFamily" fontSize="h6.fontSize" mb={2} className={schedule.work ? classes.titleDisabled : ""}>{schedule.day_name}</Box>
 
             <TextFieldHour type="start_work" label="Inicio"  work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={getRangeHours('start_work')}></TextFieldHour>

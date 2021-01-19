@@ -9,21 +9,37 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const workdays = [
-    'Lunes', 'Martes', 'Miécoles', 'Jueves', 'Viernes', 'Sábado'
-]
 
-const DialogRepeatDay = () => {
+const DialogRepeatDay = (props) => {
 
-    const [open, setOpen] = useState(false);
+    const [workDays, setWorkDays] = useState([
+        { id: 0, name: 'Lunes', checked: false },
+        { id: 1, name: 'Martes', checked: false },
+        { id: 2, name: 'Miercoles', checked: false },
+        { id: 3, name: 'Jueves', checked: false },
+        { id: 4, name: 'Viernes', checked: false },
+        { id: 5, name: 'Sábado', checked: false },
+    ])
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const { AcceptDialog, dayCompleted } = props
+
+
+
+    const handleAcceptDialog = () => {
+
+        AcceptDialog(workDays)
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleSelectDay = (index, name) => (event) => {
+
+        let editDay = workDays.map(dia => {return {...dia}})
+
+        editDay.find(dia => dia.id === index ).checked = !editDay.find(dia => dia.id === index).checked;
+
+        setWorkDays(editDay)
+
     };
+
     const classes = useStyles()
 
     return (
@@ -31,8 +47,8 @@ const DialogRepeatDay = () => {
         <div>
 
             <Dialog
-                open={open}
-                onClose={handleClose}
+                open={props.show}
+                onClose={handleAcceptDialog}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -42,22 +58,22 @@ const DialogRepeatDay = () => {
                         Eliga los dias que quiera repetir la configuración.
                     </DialogContentText>
                     <Box display="flex" mt={5}>
-                        {workdays.map((day, index) => {
+                        {workDays.map((day, index) => {
                             return <FormControlLabel
                                 key={index}
                                 value="top"
-                                control={<Checkbox color="secondary" />}
-                                label={day}
+                                control={<Checkbox name={day.name} checked={index === dayCompleted ? true : day.checked} disabled={index === dayCompleted ? true : false} color="secondary" onChange={handleSelectDay(day.id, day.name)} />}
+                                label={day.name}
                                 labelPlacement="top"
                             />
                         })}
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="secondary">
+                    <Button onClick={handleAcceptDialog} color="secondary">
                         Seguir día a día
                     </Button>
-                    <Button onClick={handleClose} color="secondary" autoFocus>
+                    <Button onClick={handleAcceptDialog} color="secondary" autoFocus>
                         Aceptar
                      </Button>
                 </DialogActions>
