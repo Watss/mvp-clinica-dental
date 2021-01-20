@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class AppoinmentsCollection extends ResourceCollection
 {
+    public $collects = AppoinmentsResource::class;
     /**
      * Transform the resource collection into an array.
      *
@@ -14,6 +15,7 @@ class AppoinmentsCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+
         return [
             'data' => $this->collection,
             'meta' => [

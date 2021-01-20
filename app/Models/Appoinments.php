@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -19,4 +20,24 @@ class Appoinments extends Model
         'updated_at',
         'deleted_at'
     ];
+
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+    public function dentist()
+    {
+        return $this->belongsTo(Dentist::class);
+    }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Resources\Appoinments;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Appoinments extends JsonResource
+class AppoinmentsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,16 +14,21 @@ class Appoinments extends JsonResource
      */
     public function toArray($request)
     {
+
+        //dd($this->resource->user);
         return  [
 
             'type' => 'appoinments',
-            'id'   => (String) $this->resource->getRouteKey(),
+            'id'   => (string) $this->resource->getRouteKey(),
             'attributes' => [
-
+                'date' => $this->resource->created_at,
+                'time' => $this->resource->time,
+                'dentis'=>$this->resource->dentist->load('user'),
+                'patient' => $this->resource->patient,
+                'user' => $this->resource->user,
+                'office' => $this->resource->office,
             ],
-            'links' => [
-
-            ]
+            'links' => []
         ];
     }
 }
