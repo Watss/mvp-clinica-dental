@@ -60,6 +60,11 @@ const TopBar = ({
     setAnchorEl(null);
   };
 
+  const settingsLinks = [
+    { link: '/dentist', name: 'Odontologos'},
+    { link: '/item', name: 'Prestaciones'},
+  ]
+
   return (
     <AppBar
       className={clsx(classes.root, className)}
@@ -72,7 +77,7 @@ const TopBar = ({
         </RouterLink>
         <Box className={classes.listMenu}>
           <Button size="small" color="inherit" disableElevation className={classes.listMenuLink}>Agenda</Button>
-          <Button size="small" color="inherit" disableElevation className={classes.listMenuLink}>Pacientes</Button>
+          <Button size="small" color="inherit" component={Link} to="/patients" disableElevation className={classes.listMenuLink}>Pacientes</Button>
           <Button size="small" color="inherit" disableElevation className={classes.listMenuLink} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} endIcon={<ExpandMoreIcon />}>Administración</Button>
           <Menu
             elevation={1}
@@ -82,7 +87,8 @@ const TopBar = ({
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem component={Link} to="/dentist" onClick={handleClose}>Odonotologos</MenuItem>
+            {settingsLinks.map((menu,index) => (<MenuItem key={index} component={Link} to={menu.link} onClick={handleClose}>{menu.name}</MenuItem>))}
+            
           </Menu>
         </Box>
 
@@ -100,7 +106,7 @@ const TopBar = ({
           >
             <Avatar className={classes.avatar}>N</Avatar>
           </IconButton>
-          
+
         </div>
       </Toolbar>
     </AppBar>

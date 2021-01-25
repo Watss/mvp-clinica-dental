@@ -6,6 +6,8 @@ import routes from "./routes/Routes";
 import theme from './utils/theme';
 import generateStore from './redux/store';
 import GlobalStyles from "./components/GlobalStyles";
+import { SnackbarProvider } from 'notistack';
+
 
 const store = generateStore();
 
@@ -14,11 +16,13 @@ const App = () => {
   const routing = useRoutes(routes);
   return (
     <Provider store={store}>
+      <SnackbarProvider maxSnack={3}>
             <ThemeProvider theme={theme}>
                     <GlobalStyles />
                     {routing}
             </ThemeProvider>
-      </Provider>
+      </SnackbarProvider>
+    </Provider>
     );
 }
 
