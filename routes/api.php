@@ -30,4 +30,8 @@ Route::group(['prefix' => 'v1'], function () {
     //schedules
     Route::apiResource('schedules','Api\ScheduleController');
 
+    //Appoinments
+    Route::post('appoinments/{id}','Api\AppoinmentsController@restore')->name('patients.restore');
+    Route::apiResource('appoinments','Api\AppoinmentsController');
+
 });
