@@ -50,6 +50,7 @@ class PatientsController extends Controller
      */
     public function show(Patient $patient)
     {
+
         return PatientsResource::make($patient);
     }
 

@@ -24,12 +24,12 @@ class AppoinmentsRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => ['required','max:50','min:2'],
-            'time' => ['required','max:50','min:2'],
-            'stretch' => ['required','max:50','min:2'],
-            'dentis_id' => ['required','max:50','min:2'],
-            'patient_id' => ['required','max:50','min:2'],
-            'office_id' => ['required','max:50','min:2']
+            'date' => ['required','date'],
+            'time' => ['required','max:8','min:2'],
+            'stretch' => ['required','max:8','min:2'],
+            'dentist_id' => [ 'required','numeric','exists:dentists,id'],
+            'patient_id' => [ 'required','numeric','exists:patients,id'],
+            'office_id' =>  ['required','numeric','exists:offices,id'],
         ];
     }
 }

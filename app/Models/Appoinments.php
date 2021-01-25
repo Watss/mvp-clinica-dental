@@ -11,7 +11,7 @@ class Appoinments extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'date','time','stretch','dentis_id','patient_id','user_id','office_id'
+        'date','time','stretch','dentist_id','patient_id','user_id','office_id'
     ];
 
     public $allowedSorts = [

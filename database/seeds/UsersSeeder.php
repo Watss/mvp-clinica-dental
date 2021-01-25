@@ -23,5 +23,16 @@ class UsersSeeder extends Seeder
             'office_id' => '1',
 
         ]);
+
+        User::create([
+            'names' => 'dentista',
+            'last_name' => 'dentista',
+            'rut' => '1-8',
+            'adress' => 'chillancito',
+            'phone_number' => '133',
+            'user' => '2 ',
+            'password' => '123',
+            'office_id' => '1',
+        ]);
     }
 }

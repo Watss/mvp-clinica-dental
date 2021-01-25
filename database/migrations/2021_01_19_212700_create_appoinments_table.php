@@ -16,6 +16,7 @@ class CreateAppoinmentsTable extends Migration
     {
         Schema::create('appoinments', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->time('time');
             $table->time('stretch');
             $table->foreignId('dentist_id')->constrained()->onDelete('cascade');

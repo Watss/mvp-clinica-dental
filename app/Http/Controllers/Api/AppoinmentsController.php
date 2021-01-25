@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Appoinments;
 use Illuminate\Http\Request;
 use App\Http\Resources\Appoinments\AppoinmentsCollection;
+use App\Http\Resources\Appoinments\AppoinmentsResource;
+use App\Http\Requests\AppoinmentsRequest;
 
 class AppoinmentsController extends Controller
 {
@@ -25,9 +27,21 @@ class AppoinmentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AppoinmentsRequest $request)
     {
-        //
+        //dd($request->all());
+
+        $request = $request->all();
+        $request += ['user_id' => 1];
+
+        $appoinments= Appoinments::create($request);
+
+
+
+        return response()->json([
+            "success" => true,
+            "appoinment" => AppoinmentsResource::make($appoinments)
+        ], 201);
     }
 
     /**
@@ -36,9 +50,10 @@ class AppoinmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show( Appoinments $appoinment)
     {
-        //
+        //dd($appoinment);
+        return AppoinmentsResource::make($appoinment);
     }
 
     /**
@@ -48,9 +63,15 @@ class AppoinmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AppoinmentsRequest $request,Appoinments $appoinment)
     {
-        //
+        $appoinment->update($request->only('date','time'));
+
+        return response()->json([
+            "success" => true,
+            "appoinments" => AppoinmentsResource::make($appoinment)
+        ], 200);
+
     }
 
     /**
@@ -59,8 +80,31 @@ class AppoinmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Appoinments $appoinment)
     {
-        //
+        $appoinment->delete();
+
+        return response()->json([
+            "success" => true,
+            "message" => "La cita ha sido eliminada correctamente"
+        ], 200);
     }
+
+    public function restore($id)
+    {
+        $appoinment = Appoinments::onlyTrashed()->find($id);
+
+        if(!$appoinment){
+            abort(404);
+        }
+
+        $appoinment->restore();
+
+        return response()->json([
+            "success" => true,
+            "message" => "La cita n° $appoinment->id ha sido Habilitada"
+        ], 200);
+    }
+
+
 }
