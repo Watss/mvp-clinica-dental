@@ -90,8 +90,7 @@ class PatientsController extends Controller
 
     public function restore($id)
     {
-
-        $patient = Patient::withTrashed()->find($id);
+        $patient = Patient::onlyTrashed()->find($id);
 
         if(!$patient){
             abort(404);
