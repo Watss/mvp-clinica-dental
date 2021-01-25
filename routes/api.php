@@ -35,4 +35,9 @@ Route::group(['prefix' => 'v1'], function () {
     //categories
     Route::apiResource('categories','Api\CategoryController');
 
+    //Appoinments
+    Route::post('appoinments/{id}','Api\AppoinmentsController@restore')->name('patients.restore');
+    Route::apiResource('appoinments','Api\AppoinmentsController');
+
+
 });
