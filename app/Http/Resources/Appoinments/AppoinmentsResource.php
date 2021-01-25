@@ -24,7 +24,7 @@ class AppoinmentsResource extends JsonResource
                 'date' => $this->resource->date,
                 'time' => $this->resource->time,
                 'stretch' => $this->resource->stretch,
-                'dentist' => $this->resource->dentist,
+                'dentist' => $this->resource->dentist->load('user'),
                 'patient' => $this->resource->patient,
                 'user' => $this->resource->user,
                 'office' => $this->resource->office,
