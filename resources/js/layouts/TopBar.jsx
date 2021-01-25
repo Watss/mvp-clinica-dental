@@ -60,6 +60,11 @@ const TopBar = ({
     setAnchorEl(null);
   };
 
+  const settingsLinks = [
+    { link: '/dentist', name: 'Odontologos'},
+    { link: '/item', name: 'Prestaciones'},
+  ]
+
   return (
     <AppBar
       className={clsx(classes.root, className)}
@@ -82,7 +87,8 @@ const TopBar = ({
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem component={Link} to="/dentist" onClick={handleClose}>Odonotologos</MenuItem>
+            {settingsLinks.map((menu,index) => (<MenuItem key={index} component={Link} to={menu.link} onClick={handleClose}>{menu.name}</MenuItem>))}
+            
           </Menu>
         </Box>
 
