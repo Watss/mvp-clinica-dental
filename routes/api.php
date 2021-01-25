@@ -30,4 +30,9 @@ Route::group(['prefix' => 'v1'], function () {
     //schedules
     Route::apiResource('schedules','Api\ScheduleController');
 
+    //items
+    Route::apiResource('items','Api\ItemController');
+    //categories
+    Route::apiResource('categories','Api\CategoryController');
+
 });
