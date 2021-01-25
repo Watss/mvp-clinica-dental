@@ -16,3 +16,5 @@ npm-debug.log
 composer.lock
 package-lock.json
 yarn-error.log
+/draft.yaml
+/.blueprint
