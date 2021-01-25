@@ -77,7 +77,7 @@ const TopBar = ({
         </RouterLink>
         <Box className={classes.listMenu}>
           <Button size="small" color="inherit" disableElevation className={classes.listMenuLink}>Agenda</Button>
-          <Button size="small" color="inherit" disableElevation className={classes.listMenuLink}>Pacientes</Button>
+          <Button size="small" color="inherit" component={Link} to="/patients" disableElevation className={classes.listMenuLink}>Pacientes</Button>
           <Button size="small" color="inherit" disableElevation className={classes.listMenuLink} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} endIcon={<ExpandMoreIcon />}>Administración</Button>
           <Menu
             elevation={1}
@@ -106,7 +106,7 @@ const TopBar = ({
           >
             <Avatar className={classes.avatar}>N</Avatar>
           </IconButton>
-          
+
         </div>
       </Toolbar>
     </AppBar>
