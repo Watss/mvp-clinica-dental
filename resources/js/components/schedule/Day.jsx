@@ -18,32 +18,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Day = (props) => {
 
-    const { name, DoesNotAttend,value,data} = props
     const classes = useStyles()
+    const { id, schedule, DoesNotAttend, value, onChange } = props
     const [does_not_attend, setDoesNotAttend] = useState(DoesNotAttend)
     const [firtsHourSelected, setFirtsHourSelected] = useState(false)
     const [dayCompleted, setDayCompleted] = useState(false)
-
 
     const [workDay, setWorkDay] = useState({
         start_work: "09:30",
         end_work: "17:00"
     })
 
-    const [schedule, setSchedule] = useState({
-        day_name: name,
-        start_work: "",
-        end_work: "",
-        launch_time: false,
-        start_launch_time: "",
-        end_launch_time: "",
-        work: false,
-
-    })
-
-    useEffect(()=>{
-        console.log(data);
-    },[])
 
     const getRangeHours = (type) => {
 
@@ -96,8 +81,8 @@ const Day = (props) => {
     const handleChangeChecked = (event) => {
 
         const target_schedule = { ...schedule, [event.target.name]: event.target.name === "work" ? !schedule.work : !schedule.launch_time }
-        setSchedule(target_schedule)
-        props.onChange(target_schedule)
+
+        onChange(target_schedule, dayCompleted, value, id)
     };
 
 
@@ -118,23 +103,21 @@ const Day = (props) => {
         let target_schedule = { ...newSchedule, [type]: time }
 
 
-        setSchedule(target_schedule)
+        if (isSheduleComplete(schedule)) { // Verifica si hay un dia completado
 
-        if(isSheduleComplete(schedule)){ // Verifica si hay un dia completado
-
-           setDayCompleted(true)
+            setDayCompleted(true)
         }
 
 
-        props.onChange(target_schedule,dayCompleted,value)
+        props.onChange(target_schedule, dayCompleted, value, id)
     };
 
 
-    const isSheduleComplete = (schedule)=>{
+    const isSheduleComplete = (schedule) => {
 
-        if(schedule.start_work === "" || schedule.end_work === "" || schedule.start_launch_work === ""  || schedule.end_launch_work === ""  ){
+        if (schedule.start_work === "" || schedule.end_work === "" || schedule.start_launch_work === "" || schedule.end_launch_work === "") {
             return false
-        }else{
+        } else {
             return true
         }
 
@@ -148,7 +131,7 @@ const Day = (props) => {
         <Paper className={!schedule.work ? classes.paper : classes.paperDisabled} elevation={1}  >
             <Box fontFamily="fontFamily" fontSize="h6.fontSize" mb={2} className={schedule.work ? classes.titleDisabled : ""}>{schedule.day_name}</Box>
 
-            <TextFieldHour type="start_work" label="Inicio"  work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={getRangeHours('start_work')}></TextFieldHour>
+            <TextFieldHour type="start_work" label="Inicio" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_work} listHours={getRangeHours('start_work')}></TextFieldHour>
             <TextFieldHour type="end_work" label="Fin" work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_work} listHours={getRangeHours('end_work')}></TextFieldHour>
             <FormControlLabel
                 control={
@@ -162,7 +145,7 @@ const Day = (props) => {
                 }
                 label="Descanso"
             />
-            <TextFieldHour type="start_launch_time" label="Inicio " launchTime={schedule.launch_time}  work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_launch_time} listHours={getRangeHours('start_launch_time')}></TextFieldHour>
+            <TextFieldHour type="start_launch_time" label="Inicio " launchTime={schedule.launch_time} work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.start_launch_time} listHours={getRangeHours('start_launch_time')}></TextFieldHour>
             <TextFieldHour type="end_launch_time" label="Fin" launchTime={schedule.launch_time} work={schedule.work} ChangeTime={handleChangeTime} inputValue={schedule.end_launch_time} listHours={getRangeHours('end_launch_time')}></TextFieldHour>
             <FormControlLabel
                 control={

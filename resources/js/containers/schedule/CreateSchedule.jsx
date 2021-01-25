@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     },
     nameTextField: {
         width: "28em"
+    },
+    resize: {
+        fontSize: 23
     }
 }));
 
@@ -24,58 +27,116 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateSchedule = () => {
 
-    const [open, setOpen] = useState(false);
-    const [schedule, setSchedule] = useState({})
+
+    const [schedule, setSchedule] = useState([])
     const [nameSchedule, setNameSchedule] = useState("")
     const [showDialogCopyDays, setShowDialogCopyDays] = useState(false)
     const [dayCompleted, setDayCompleted] = useState(null)
+    const [daysEnabled, setDaysEnabled] = useState([0, 1, 2, 3, 4, 5]) //TODO : Obtener los dias de trabajo desde la configuración de la aplicación
 
+    useEffect(() => {
+        console.log(schedule)
+        setSchedule(loadDaysSchedule(daysEnabled))
 
-    const handleChange = (scheduleDay, completed, valueDay) => {
+    }, [])
+
+    const targetNameDay = (day) => {
+        switch (day) {
+            case 0: return "Lunes"; break
+            case 1: return "Martes"; break
+            case 2: return "Miércoles"; break
+            case 3: return "Jueves"; break
+            case 4: return "Viernes"; break
+            case 5: return "Sábado"; break
+            case 6: return "Domingo"; break
+        }
+
+        return daySelected
+    }
+
+    const loadDaysSchedule = (daysEnabled) => {
+
+        let target_schedule = daysEnabled.reduce((acc, day) => {
+            return [...acc, {
+                id: day,
+                day_name: targetNameDay(day),
+                start_work: "",
+                end_work: "",
+                launch_time: false,
+                start_launch_time: "",
+                end_launch_time: "",
+                work: false,
+            }]
+        }, [])
+
+        return target_schedule
+    }
+
+    const handleChange = (scheduleDay, completed, valueDay, id) => {
 
         if (completed && dayCompleted === null) {
 
-            setDayCompleted(valueDay)
+            setDayCompleted(id)
 
             setShowDialogCopyDays(true)
         }
 
-        const target_schedule = { ...schedule, [scheduleDay.day_name]: scheduleDay }
+        let tempSchedule = [...schedule];
 
-        setSchedule(target_schedule);
+        let tempItemSchedule = { ...tempSchedule[id] };
+
+        tempItemSchedule = { ...scheduleDay }
+
+        tempSchedule[id] = tempItemSchedule
+
+        setSchedule(tempSchedule)
+
 
     };
 
-    const handleSubmit = () => { };
-
+    /**
+     * Realiza una copia del primer dia completado a los demas dias.
+     */
     const handleAcceptDialog = (daysSelected) => {
 
-        let daysSelectedChecked = getDaySelected(daysSelected); // Devuelve checked seleccionados
+
+        let daysSelectedChecked = daysSelected.filter(dia => (dia.checked && dia.id)) // Devuelve checked seleccionados
+
+        let daysSelectedNotChecked = daysSelected.filter(dia => (!dia.checked && dia.id)) // Devuelve checked  no seleccionados
 
         let objectDaySelected = daysSelected.find(day => day.id === dayCompleted) // Busca el objeto del dia completado
 
-        let objectToCopy = Object.values(schedule).find(day => day.day_name === objectDaySelected.name) // Obtiene el objeto a copiar
+        let objectToCopy = Object.values(schedule).find(day => day.id === objectDaySelected.id) // Obtiene el objeto a copiar
 
+        const daysNotSelected = daysSelectedNotChecked.reduce((acc, day) => {
+            return [...acc, {
+                ...objectToCopy, day_name: day.name, id: day.id, start_work: "",
+                end_work: "",
+                launch_time: false,
+                start_launch_time: "",
+                end_launch_time: "",
+                work: false,
+            }]
+        }, [])
 
-        const dayCopied = daysSelectedChecked.reduce((acc, day) => { // Crea copias del dia seleccionado por primera vez
-            return { ...acc, [day.name]: { ...objectToCopy, day_name: day.name } }
-        }, {})
+        const daysCopied = daysSelectedChecked.reduce((acc, day) => { // Crea copias del dia seleccionado por primera vez
+            return [...acc, { ...objectToCopy, day_name: day.name, id: day.id, copied: false, }]
+        }, [objectToCopy])
 
-        setSchedule({ ...schedule, ...dayCopied })
+        setSchedule(daysCopied.concat(daysNotSelected))
 
 
         setShowDialogCopyDays(false)
 
     }
 
+    const handleSubmit = () => { };
 
-    const getDaySelected = (arr) => {
-        return arr.filter(dia => (dia.checked && dia.id))
-    }
-
-    const indexedSchedule = Object.entries(schedule).length === 0 && Object.values(schedule).reduce((acc, el) => ({...acc,[el.day_name] : el}),{})
-
-    console.log(indexedSchedule("Lunes"));
+    const renderSchedule = schedule.map((day, index) => {
+        return <Grid key={index} item lg={2} md={2} >
+            <Day id={index} name={day.day_name} onChange={handleChange} schedule={day}  ></Day>
+        </Grid>
+    })
 
     const classes = useStyles()
 
@@ -87,35 +148,22 @@ const CreateSchedule = () => {
                     <Grid item lg={12}>
 
                         <Box mt={2} mb={2}>
-                            <TextField className={classes.nameTextField} onChange={(event) => setNameSchedule(event.target.value)} value={nameSchedule} id="outlined-basic" label="Agregar nombre" color="secondary" />
+                            <TextField InputProps={{
+                                classes: {
+                                    input: classes.resize,
+                                },
+                            }} className={classes.nameTextField} onChange={(event) => setNameSchedule(event.target.value)} value={nameSchedule} id="outlined-basic" label="Agregar nombre" color="secondary" />
                         </Box>
 
                     </Grid>
-                    <Grid item container lg={12} md={12} mt={5} spacing={1} >
-                        <Grid item lg={2} md={2} >
-                            <Day name="Lunes" onChange={handleChange} value={0}  ></Day>
-                        </Grid>
-                        <Grid item lg={2} md={2}>
-                            <Day name="Martes" onChange={handleChange} value={1}  ></Day>
-                        </Grid>
-                        <Grid item lg={2} md={2}>
-                            <Day name="Miercoles" onChange={handleChange} value={2}   ></Day>
-                        </Grid>
-                        <Grid item lg={2} md={2}>
-                            <Day name="Jueves" onChange={handleChange} value={3} ></Day>
-                        </Grid>
-                        <Grid item lg={2} md={2}>
-                            <Day name="Viernes" onChange={handleChange} value={4} ></Day>
-                            <Grid item lg={2} md={2}>
-                                <Day name="Sábado" onChange={handleChange} value={5} ></Day>
-                            </Grid>
-
-                        </Grid>
-
+                    <Grid item container lg={12} md={12} mt={5} mb={20} spacing={1} >
+                        {renderSchedule}
                     </Grid>
-                    <Grid item lg={12} mt={12} container alignItems="flex-end" justify="flex-end" >
+                    <Grid item lg={12} mt={13} alignItems="flex-end" justify="flex-end" >
+                        <Box mt={5} p={0}>
+                            <Button disabled disableElevation color="secondary" variant="contained" size="small" onClick={handleSubmit} fullWidth>Guardar</Button>
+                        </Box>
 
-                        <Button color="secondary" variant="contained" size="small" onClick={handleSubmit}>Guardar</Button>
 
                     </Grid>
 
