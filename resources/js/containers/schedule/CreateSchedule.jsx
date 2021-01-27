@@ -33,9 +33,12 @@ const CreateSchedule = () => {
     const [showDialogCopyDays, setShowDialogCopyDays] = useState(false)
     const [dayCompleted, setDayCompleted] = useState(null)
     const [daysEnabled, setDaysEnabled] = useState([0, 1, 2, 3, 4, 5]) //TODO : Obtener los dias de trabajo desde la configuración de la aplicación
+    const [formSchedule, setFormSchedule] = useState([])
 
+    console.log(formSchedule, "form")
+    console.log(schedule, "schedule")
     useEffect(() => {
-        console.log(schedule)
+
         setSchedule(loadDaysSchedule(daysEnabled))
 
     }, [])
@@ -91,6 +94,7 @@ const CreateSchedule = () => {
 
         setSchedule(tempSchedule)
 
+        setFormSchedule(tempSchedule)
 
     };
 
@@ -125,12 +129,20 @@ const CreateSchedule = () => {
 
         setSchedule(daysCopied.concat(daysNotSelected))
 
+        setFormSchedule(daysCopied)
 
         setShowDialogCopyDays(false)
 
     }
 
-    const handleSubmit = () => { };
+    const handleSubmit = async () => {
+
+        try{
+            const res = axiosInstance.post('schedules')
+            console.log(res)
+        }
+        catch(e){console.log(e.response.data)}
+    };
 
     const renderSchedule = schedule.map((day, index) => {
         return <Grid key={index} item lg={2} md={2} >
@@ -161,7 +173,7 @@ const CreateSchedule = () => {
                     </Grid>
                     <Grid item lg={12} mt={13} alignItems="flex-end" justify="flex-end" >
                         <Box mt={5} p={0}>
-                            <Button disabled disableElevation color="secondary" variant="contained" size="small" onClick={handleSubmit} fullWidth>Guardar</Button>
+                            <Button  disableElevation color="secondary" variant="contained" size="small" onClick={handleSubmit} fullWidth>Guardar</Button>
                         </Box>
 
 
