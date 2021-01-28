@@ -20,9 +20,7 @@ const Day = (props) => {
 
     const classes = useStyles()
     const { id, schedule, DoesNotAttend, value, onChange } = props
-    const [does_not_attend, setDoesNotAttend] = useState(DoesNotAttend)
-    const [firtsHourSelected, setFirtsHourSelected] = useState(false)
-    const [dayCompleted, setDayCompleted] = useState(false)
+
 
     const [workDay, setWorkDay] = useState({
         start_work: "09:30",
@@ -82,7 +80,7 @@ const Day = (props) => {
 
         const target_schedule = { ...schedule, [event.target.name]: event.target.name === "work" ? !schedule.work : !schedule.launch_time }
 
-        onChange(target_schedule, dayCompleted, value, id)
+        onChange(target_schedule, value, id)
     };
 
 
@@ -103,26 +101,11 @@ const Day = (props) => {
         let target_schedule = { ...newSchedule, [type]: time }
 
 
-        if (isSheduleComplete(schedule)) { // Verifica si hay un dia completado
-
-            setDayCompleted(true)
-        }
-
-
-        props.onChange(target_schedule, dayCompleted, value, id)
+        props.onChange(target_schedule, value, id)
     };
 
 
-    const isSheduleComplete = (schedule) => {
 
-        if (schedule.start_work === "" || schedule.end_work === "" || schedule.start_launch_work === "" || schedule.end_launch_work === "") {
-            return false
-        } else {
-            return true
-        }
-
-
-    }
 
 
     // 00000008  start_launch_time

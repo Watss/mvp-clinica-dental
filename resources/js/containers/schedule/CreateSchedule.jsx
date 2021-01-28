@@ -85,20 +85,17 @@ const CreateSchedule = () => {
         return tempSchedule
     }
 
-    const handleChange = (scheduleDay, completed, valueDay, id) => {
+    const handleChange = (scheduleDay, valueDay, id) => {
 
-        if (completed && dayCompleted === null) {
 
-            setDayCompleted(id)
-
-            setShowDialogCopyDays(true)
-        }
 
         const targetSchedule = updateSchedule(schedule, id, scheduleDay) // return scheduel updated
 
         setSchedule(targetSchedule)
 
         setFormSchedule([...formSchedule, targetSchedule[id]])
+
+        setShowDialogCopyDays(isFirstDayComplete());
 
     };
 
@@ -154,6 +151,17 @@ const CreateSchedule = () => {
             <Day id={index} name={day.day_name} onChange={handleChange} schedule={day}  ></Day>
         </Grid>
     })
+
+
+    const isFirstDayComplete = () => {
+        if (schedule[0].start_work === "" || schedule[0].end_work === "" || schedule[0].start_launch_work === "" || schedule[0].end_launch_work === "") {
+            console.log(false);
+            return false
+        } else {
+            setDayCompleted(schedule[0].id);
+            return true
+        }
+    }
 
     const classes = useStyles()
 
