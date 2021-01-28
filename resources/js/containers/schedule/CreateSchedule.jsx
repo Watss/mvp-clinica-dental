@@ -95,7 +95,7 @@ const CreateSchedule = () => {
 
         setFormSchedule([...formSchedule, targetSchedule[id]])
 
-        setShowDialogCopyDays(isFirstDayComplete());
+        setShowDialogCopyDays(isFirstDayCompleted(targetSchedule));
 
     };
 
@@ -153,14 +153,18 @@ const CreateSchedule = () => {
     })
 
 
-    const isFirstDayComplete = () => {
-        if (schedule[0].start_work === "" || schedule[0].end_work === "" || schedule[0].start_launch_work === "" || schedule[0].end_launch_work === "") {
-            console.log(false);
-            return false
-        } else {
-            setDayCompleted(schedule[0].id);
-            return true
+    const isFirstDayCompleted = (schedule) => {
+
+        let onlyWork = schedule[0].start_work != "" && schedule[0].end_work != "";
+        let onlyLaunch = schedule[0].start_launch_time != "" && schedule[0].end_launch_time != "";
+        let isCompleted = schedule[0].launch_time ? onlyWork : onlyWork && onlyLaunch;
+
+        if(isCompleted){
+            setDayCompleted( schedule[0].id);
+            return true;
         }
+
+        return false
     }
 
     const classes = useStyles()
