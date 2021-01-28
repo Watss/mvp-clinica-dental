@@ -35,12 +35,9 @@ const CreateSchedule = () => {
     const [daysEnabled, setDaysEnabled] = useState([0, 1, 2, 3, 4, 5]) //TODO : Obtener los dias de trabajo desde la configuración de la aplicación
     const [formSchedule, setFormSchedule] = useState([])
 
-    console.log(formSchedule, "form")
-    console.log(schedule, "schedule")
+
     useEffect(() => {
-
         setSchedule(loadDaysSchedule(daysEnabled))
-
     }, [])
 
     const targetNameDay = (day) => {
@@ -68,11 +65,24 @@ const CreateSchedule = () => {
                 launch_time: false,
                 start_launch_time: "",
                 end_launch_time: "",
-                work: false,
+                work: day ===  0 ? false : true,
             }]
         }, [])
 
         return target_schedule
+    }
+
+    const updateSchedule = (schedule, id, scheduleDay) => {
+
+        let tempSchedule = [...schedule];
+
+        let tempItemSchedule = { ...tempSchedule[id] };
+
+        tempItemSchedule = { ...scheduleDay }
+
+        tempSchedule[id] = tempItemSchedule
+
+        return tempSchedule
     }
 
     const handleChange = (scheduleDay, completed, valueDay, id) => {
@@ -84,17 +94,11 @@ const CreateSchedule = () => {
             setShowDialogCopyDays(true)
         }
 
-        let tempSchedule = [...schedule];
+        const targetSchedule = updateSchedule(schedule, id, scheduleDay) // return scheduel updated
 
-        let tempItemSchedule = { ...tempSchedule[id] };
+        setSchedule(targetSchedule)
 
-        tempItemSchedule = { ...scheduleDay }
-
-        tempSchedule[id] = tempItemSchedule
-
-        setSchedule(tempSchedule)
-
-        setFormSchedule(tempSchedule)
+        setFormSchedule([...formSchedule, targetSchedule[id]])
 
     };
 
@@ -119,7 +123,7 @@ const CreateSchedule = () => {
                 launch_time: false,
                 start_launch_time: "",
                 end_launch_time: "",
-                work: false,
+                work: true,
             }]
         }, [])
 
@@ -136,15 +140,16 @@ const CreateSchedule = () => {
     }
 
     const handleSubmit = async () => {
-
-        try{
-            const res = axiosInstance.post('schedules')
+        console.log(formSchedule,"form");
+        try {
+            const res = await axiosInstance.post('schedules')
             console.log(res)
         }
-        catch(e){console.log(e.response.data)}
+        catch (e) { console.log(e.response.data) }
     };
 
     const renderSchedule = schedule.map((day, index) => {
+
         return <Grid key={index} item lg={2} md={2} >
             <Day id={index} name={day.day_name} onChange={handleChange} schedule={day}  ></Day>
         </Grid>
@@ -160,7 +165,7 @@ const CreateSchedule = () => {
                     <Grid item lg={12}>
 
                         <Box mt={2} mb={2}>
-                            <TextField InputProps={{
+                            <TextField  required InputProps={{
                                 classes: {
                                     input: classes.resize,
                                 },
@@ -173,7 +178,7 @@ const CreateSchedule = () => {
                     </Grid>
                     <Grid item lg={12} mt={13} alignItems="flex-end" justify="flex-end" >
                         <Box mt={5} p={0}>
-                            <Button  disableElevation color="secondary" variant="contained" size="small" onClick={handleSubmit} fullWidth>Guardar</Button>
+                            <Button disableElevation color="secondary" variant="contained" size="small" onClick={handleSubmit} fullWidth>Guardar</Button>
                         </Box>
 
 
