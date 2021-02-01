@@ -31,6 +31,7 @@ const CreateSchedule = () => {
     const [schedule, setSchedule] = useState([])
     const [nameSchedule, setNameSchedule] = useState("")
     const [showDialogCopyDays, setShowDialogCopyDays] = useState(false)
+    const [showButtonSave,setShowButtonSave] = useState(false);
     const [dayCompleted, setDayCompleted] = useState(null)
     const [daysEnabled, setDaysEnabled] = useState([0, 1, 2, 3, 4, 5]) //TODO : Obtener los dias de trabajo desde la configuración de la aplicación
     const [formSchedule, setFormSchedule] = useState([])
@@ -87,16 +88,17 @@ const CreateSchedule = () => {
 
     const handleChange = (scheduleDay, valueDay, id) => {
 
-
-
         const targetSchedule = updateSchedule(schedule, id, scheduleDay) // return scheduel updated
 
         setSchedule(targetSchedule)
 
         setFormSchedule([...formSchedule, targetSchedule[id]])
 
-        setShowDialogCopyDays(isFirstDayCompleted(targetSchedule));
+        id == 0 && setShowDialogCopyDays(isFirstDayCompleted(targetSchedule))
 
+        const daysCompleted = targetSchedule.filter( day => !day.work  && !validatedDaysCompleted(day) ) //this return array with days not completed
+
+        setShowButtonSave(daysCompleted == 0);
     };
 
     /**
@@ -153,11 +155,18 @@ const CreateSchedule = () => {
     })
 
 
+    const validatedDaysCompleted =(day)=>{
+        let onlyWork = day.start_work != "" && day.end_work != "";
+        let onlyLaunch = day.start_launch_time != "" && day.end_launch_time != "";
+
+        return  day.launch_time ? onlyWork : onlyWork && onlyLaunch
+
+    }
+
     const isFirstDayCompleted = (schedule) => {
 
-        let onlyWork = schedule[0].start_work != "" && schedule[0].end_work != "";
-        let onlyLaunch = schedule[0].start_launch_time != "" && schedule[0].end_launch_time != "";
-        let isCompleted = schedule[0].launch_time ? onlyWork : onlyWork && onlyLaunch;
+
+        let isCompleted =  validatedDaysCompleted(schedule[0])
 
         if(isCompleted){
             setDayCompleted( schedule[0].id);
@@ -190,7 +199,7 @@ const CreateSchedule = () => {
                     </Grid>
                     <Grid item lg={12} mt={13} alignItems="flex-end" justify="flex-end" >
                         <Box mt={5} p={0}>
-                            <Button disableElevation color="secondary" variant="contained" size="small" onClick={handleSubmit} fullWidth>Guardar</Button>
+                            <Button disableElevation color="secondary" variant="contained" size="small" onClick={handleSubmit} fullWidth disabled={!showButtonSave}>Guardar</Button>
                         </Box>
 
 
