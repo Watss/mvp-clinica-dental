@@ -11,11 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/js/index.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+mix.react('resources/js/index.js', 'public/js');
 
 mix.browserSync({
-    proxy: "http://mvp-clinica-dental.test",
+    proxy: "https://mvp-clinica-dental.test",
     open: true,
     port:8008
 });
