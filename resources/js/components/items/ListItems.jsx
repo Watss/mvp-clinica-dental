@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { List, ListSubheader,Grid, ListItemText, ListItem, CircularProgress } from '@material-ui/core';
 import IndividualItem from './IndividualItem';
 import { Alert, Pagination } from '@material-ui/lab';
-import { FilterItems } from './filtersItems';
+import { FilterItems } from './FiltersItems';
 import { useForm } from '../../hooks/useForm';
 import { useGetApi } from '../../hooks/useGetApi';
 
