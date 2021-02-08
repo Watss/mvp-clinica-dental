@@ -17,5 +17,5 @@ mix.react('resources/js/index.js', 'public/js')
 mix.browserSync({
     proxy: "http://mvp-clinica-dental.test",
     open: true,
-    port:8008
+    port:8080
 });
