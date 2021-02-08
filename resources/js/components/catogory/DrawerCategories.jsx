@@ -7,6 +7,8 @@ import { useSnackbar } from 'notistack';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState,useEffect } from 'react';
 import axiosInstance from '../../utils/axios';
+import {useGetApi} from '../../hooks/useGetApi';
+import {useForm} from '../../hooks/useForm';
 
 const useStyles = makeStyles((theme) => ({
     drawer:{
@@ -20,32 +22,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+//TODO: REFACTOR COMPONENT AND LIMIT CATEGORIES
+
 export const DrawerCategories = ({open,handleCloseDialog}) => {
     const classes = useStyles();
 
     const { enqueueSnackbar } = useSnackbar();
-    const [loader,setLoader] = useState(true);
-    const [nameCategory,setNameCategory] = useState(null);
+
+    const { dataForm, handleOnChange} = useForm({});
     const [errors, setErrors] = useState([]);
-    const [categories, setCategories] = useState([]);
     const [buttonLoader,setButtonLoader] = useState(false);
-
-    const getCategories = async () => {
-        try {
-            const res = await axiosInstance.get('categories');
-            const { data } = res.data;
-            setCategories(data);
-            setLoader(false);
-        } catch (error) {
-            
-        }
-    }
-
-
+    const {
+        data: categories,
+        loader,
+        getData:getCategories
+    } = useGetApi('/categories');
+    console.log(categories);
     const saveCategory = async () => {
         try {
             setButtonLoader(true);
-            const res = await axiosInstance.post('/categories',{name:nameCategory});
+            const res = await axiosInstance.post('/categories',dataForm);
             enqueueSnackbar('Categoria Guardada Correctamente',{variant: 'success'});
             getCategories();
         } catch (error) {
@@ -55,10 +51,6 @@ export const DrawerCategories = ({open,handleCloseDialog}) => {
             setNameCategory(null);
             setButtonLoader(false);
         }
-    }
-
-    const handleOnChange = (e) => {
-        setNameCategory(e.target.value);
     }
 
     useEffect( () => {
