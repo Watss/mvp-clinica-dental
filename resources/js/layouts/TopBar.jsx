@@ -70,7 +70,6 @@ const TopBar = ({
   };
 
   const settingsLinks = [
-
     { link: '/dentist', name: 'Odontologos'},
     { link: '/item', name: 'Prestaciones'},
   ]
