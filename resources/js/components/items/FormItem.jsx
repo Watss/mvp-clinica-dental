@@ -8,6 +8,7 @@ import { AutoCompleteCategory } from '../catogory/AutoCompleteCategory';
 import { DrawerCategories } from '../catogory/DrawerCategories';
 import {Link} from "react-router-dom";
 import { useSnackbar } from 'notistack';
+import { useForm } from '../../hooks/useForm';
 
 
 export const FormItem = ({ classes }) => {
@@ -16,10 +17,10 @@ export const FormItem = ({ classes }) => {
     const { enqueueSnackbar } = useSnackbar();
     const [openDialog,setOpenDialog] = useState(false);
     const [checked, setChecked] = useState(true);
-    const [form, setForm] = useState({  });
+    const {dataForm, handleChangeForm,setForm }  = useForm({});
     const [loader, setLoader] = useState(false)
     const [buttonEnabled, setButtonEnabled] = useState(true)
-
+    console.log(dataForm);
     const [errors, setErrors] = useState([]);
 
     const handleChange = (event) => {
@@ -30,7 +31,7 @@ export const FormItem = ({ classes }) => {
         e.preventDefault();
         try {
             setLoader(true);
-            const res = await axiosInstance.post('items', form);
+            const res = await axiosInstance.post('items', dataForm);
             enqueueSnackbar('Item Guardado Correctamente',{variant: 'success'});
             navigate('/');
         } catch (error) {
@@ -48,18 +49,8 @@ export const FormItem = ({ classes }) => {
         setOpenDialog(false);
     }
 
-    const handleInputChange = (event,value) => {
-        if(value){
-            setForm({
-                ...form,
-                'category_id': value.id
-            })
-        }else{
-            setForm({
-                ...form,
-                [event.target.name]: event.target.value
-            })
-        }
+    const handleSetCategory = (event,value) => {
+        setForm({...dataForm, category_id: value.id});
     }
 
     return (
@@ -83,7 +74,7 @@ export const FormItem = ({ classes }) => {
                                         helperText={errors.name ? errors.name[0] : ''}
                                         variant="outlined"
                                         size="small"
-                                        onChange={handleInputChange}
+                                        onChange={handleChangeForm}
                                         required
                                     />
                                 </Grid>
@@ -98,13 +89,13 @@ export const FormItem = ({ classes }) => {
                                         helperText={errors.price ? errors.price[0] : ''}
                                         variant="outlined"
                                         size="small"
-                                        onChange={handleInputChange}
+                                        onChange={handleChangeForm}
                                         required
 
                                     />
                                 </Grid>
                                 <Grid item lg={4}>
-                                    <AutoCompleteCategory onChange={handleInputChange}/>
+                                    <AutoCompleteCategory onChange={handleSetCategory}/>
                                     <Button size="small" color="primary" onClick={handleOpenDialog}>
                                         Administrar Categorias
                                     </Button>
@@ -118,7 +109,7 @@ export const FormItem = ({ classes }) => {
                                     id="description-input"
                                     label="Descripción"
                                     multiline
-                                    onChange={handleInputChange}
+                                    onChange={handleChangeForm}
                                     rows={3}
                                     variant="outlined"
                                     />

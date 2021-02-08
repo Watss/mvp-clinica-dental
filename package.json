@@ -13,6 +13,7 @@
         "@babel/preset-react": "^7.0.0",
         "axios": "^0.21.1",
         "bootstrap": "^4.0.0",
+        "browser-sync": "^2.26.14",
         "browser-sync-webpack-plugin": "^2.3.0",
         "cross-env": "^7.0",
         "laravel-mix": "^5.0.1",
@@ -20,7 +21,9 @@
         "popper.js": "^1.12",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
-        "sass-loader": "^8.0.0"
+        "sass-loader": "^8.0.0",
+        "webpack": "^4.44.2",
+        "webpack-cli": "^4.4.0"
     },
     "dependencies": {
         "@material-ui/core": "^4.11.2",

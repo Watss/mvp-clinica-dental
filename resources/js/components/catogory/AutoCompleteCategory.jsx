@@ -2,6 +2,7 @@ import { CircularProgress, makeStyles, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axiosInstance from '../../utils/axios';
+import { useGetApi } from '../../hooks/useGetApi';
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -11,22 +12,13 @@ const useStyles = makeStyles((theme) => ({
 
 export const AutoCompleteCategory = ({onChange}) => {
     const classes = useStyles();
-    const [loader,setLoader] = useState(true);
-    const [categories, setCategories] = useState([]);
-
-    const getCategories = async () => {
-        try {
-            const res = await axiosInstance.get('/categories');
-            const { data } = res.data;
-            setCategories(data);
-            setLoader(false);
-        } catch (error) {
-            
-        }
-    }
+    const {data: categories,errors,loader,getData} = useGetApi('/categories');
 
     useEffect( () => {
-        getCategories();
+        getData();
+        return () => {
+            //TODO: FIX BUG CLEAN FUNCTION
+        };
     },[])
 
    return <Autocomplete
