@@ -40,8 +40,17 @@ const useStyles = makeStyles((theme) => ({
   },
   listMenuLink: {
     marginLeft: 2,
-    marginRight:2
-  }
+    marginRight:2,
+
+    '&:hover': {
+        color: "#28a745"
+     },
+     '&:focus': {
+        outline: "none !important"
+     },
+
+  },
+
 
 
 }));
@@ -76,7 +85,7 @@ const TopBar = ({
           <Typography color="error" className={classes.logoColor} variant="h6">DentaCloud</Typography>
         </RouterLink>
         <Box className={classes.listMenu}>
-          <Button size="small" color="inherit" disableElevation className={classes.listMenuLink}>Agenda</Button>
+          <Button size="small" color="inherit" disableElevation component={Link} to="/appointment-schedule" className={classes.listMenuLink}>Agenda</Button>
           <Button size="small" color="inherit" component={Link} to="/patients" disableElevation className={classes.listMenuLink}>Pacientes</Button>
           <Button size="small" color="inherit" disableElevation className={classes.listMenuLink} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} endIcon={<ExpandMoreIcon />}>Administración</Button>
           <Menu
@@ -87,8 +96,8 @@ const TopBar = ({
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            {settingsLinks.map((menu,index) => (<MenuItem key={index} component={Link} to={menu.link} onClick={handleClose}>{menu.name}</MenuItem>))}
-            
+            {settingsLinks.map((menu,index) => (<MenuItem key={index} component={Link} to={menu.link} className={classes.listMenuLink}  onClick={handleClose}>{menu.name}</MenuItem>))}
+
           </Menu>
         </Box>
 

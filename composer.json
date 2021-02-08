@@ -12,7 +12,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
-        "laravel/framework": "^7.30.3",
+        "laravel/framework": "^7.30.4",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.4",
         "laraveles/spanish": "^1.5"
