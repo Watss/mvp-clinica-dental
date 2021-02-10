@@ -5,6 +5,7 @@ import axiosInstance from '../../utils/axios';
 import ListDentist from '../../components/dentist/ListDentist';
 import { Link } from "react-router-dom";
 import AddIcon from '@material-ui/icons/Add';
+import { useGetApi } from '../../hooks/useGetApi';
 const useStyles = makeStyles((theme) => ({
     formUser: {
 
@@ -45,30 +46,18 @@ const useStyles = makeStyles((theme) => ({
 const Dentist = () => {
 
     const classes = useStyles();
-    const [dentists, setDentists] = useState([])
-
+    
+    const {
+        data: dentists,
+        loader,
+        getData: getDentist,
+        lastPage
+    } = useGetApi('/dentist');
 
 
     useEffect(() => {
-
-        async function fetchDentists() {
-
-            try {
-                const res = await axiosInstance.get('dentists')
-                const { data } = res.data
-                setDentists(data)
-
-
-            } catch (error) {
-
-            }
-
-
-        }
-        fetchDentists()
-
-
-    }, [])
+        getDentist();
+    }, []);
 
     return (
         <Page className={classes.root} title="ListeDentist">
