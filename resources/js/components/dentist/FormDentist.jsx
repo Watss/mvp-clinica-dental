@@ -2,62 +2,33 @@ import React ,{useState} from 'react';
 import { Container, Grid, makeStyles, Box, Paper, TextField, Button, Checkbox, CircularProgress } from '@material-ui/core';
 import { CheckBox } from '@material-ui/icons';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import { axiosInstance } from '../../utils/axios'
+import { useForm } from '../../hooks/useForm';
 import {Link} from "react-router-dom";
+import { usePostApi } from '../../hooks/usePostApi';
+import { useSnackbar } from 'notistack';
 
 export const FormDentist = ({ classes }) => {
 
-
+    const { enqueueSnackbar } = useSnackbar();
     const [checked, setChecked] = useState(true);
-    const [form, setForm] = useState({ "password": "", "office_id": 1 }) // El campo 'office_id' esta por defecto hasta que se cree la funcionalidad de sucursales
-    const [loaderCreateDentist, setLoaderCreateDentist] = useState(false)
+    const { dataForm: form, handleChangeForm : handleInputChange } = useForm({ "password": "", "office_id": 1 }) // El campo 'office_id' esta por defecto hasta que se cree la funcionalidad de sucursales
+    
+    const {loader : loaderCreateDentist,errors,postData,} = usePostApi(); 
+
     const [passwordIsValid, setpasswordIsValid] = useState(false)
     const [buttonCreateEnabled, setButtonCreateEnabled] = useState(true)
-
-    const [errors, setErrors] = useState({
-        adress: [],
-        names: [],
-        last_names: [],
-        oficce_id: [],
-        password: [],
-        phone_number: [],
-        rut: [],
-        user: [],
-        account_number: []
-
-    })
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
 
     const createDentist = async () => {
-        try {
-            setLoaderCreateDentist(true)
-            const res = await axiosInstance.post('dentists', form);
-            // Realizar acciones si la peticion fue correcta 
-            alert("dentista registrado ")
-            setLoaderCreateDentist(false)
-        } catch (error) {
-
-            setErrors(
-                {
-                    ...errors,
-                    "adress": error.response.data.errors.adress ? error.response.data.errors.adress : [],
-                    "rut": error.response.data.errors.rut ? error.response.data.errors.rut : [],
-                    "names": error.response.data.errors.names ? error.response.data.errors.names : [],
-                    "last_names": error.response.data.errors.last_names ? error.response.data.errors.last_names : [],
-                    "oficce_id": error.response.data.errors.oficce_id ? error.response.data.errors.oficce_id : [],
-                    "password": error.response.data.errors.password ? error.response.data.errors.password : [],
-                    "phone_number": error.response.data.errors.phone_number ? error.response.data.errors.phone_number : [],
-                    "user": error.response.data.errors.user ? error.response.data.errors.user : [],
-                    "account_number": error.response.data.errors.account_number ? error.response.data.errors.account_number : [],
-                }
-            )
-            setLoaderCreateDentist(false)
+        const success = await postData('dentists',form);
+        if(success){
+            enqueueSnackbar('Dentista Creado Correctamente',{variant: 'success'});
+        }else{
+            enqueueSnackbar('No se pudo guardar el dentista',{variant: 'error'}); 
         }
-        
-
     }
     const handleInputChangePassword = (event) => {
 
@@ -72,19 +43,11 @@ export const FormDentist = ({ classes }) => {
      
     }
 
-    const handleInputChange = (event) => {
-        setForm({
-            ...form,
-            [event.target.name]: event.target.value
-        })
-    }
 
     const sendForm = (event) => {
-
         if(!passwordIsValid){
             createDentist()
         }
-       
         event.preventDefault()
     }
 
@@ -99,7 +62,7 @@ export const FormDentist = ({ classes }) => {
 
                             <Grid container>
                                 <TextField
-                                    error={errors.rut.length === 0 ? false : true}
+                                    error={errors.rut ? true : false}
                                     name="rut"
                                     className={classes.textField}
                                     id="rut"
@@ -108,7 +71,7 @@ export const FormDentist = ({ classes }) => {
                                     helperText=""
                                     variant="outlined"
                                     size="small"
-                                    helperText={errors.rut.length === 0 ? "Ej : 19187259-2" : errors.rut}
+                                    helperText={errors.rut ? "Ej : 19187259-2" : errors.rut}
                                     onChange={handleInputChange}
                                     required
                                 />
@@ -116,13 +79,13 @@ export const FormDentist = ({ classes }) => {
                             <Grid container  >
 
                                 <TextField
-                                    error={errors.names.length === 0 ? false : true}
+                                    error={errors.names ? true : false}
                                     name="names"
                                     className={classes.textField}
                                     id="names"
                                     label="Nombres"
                                     defaultValue=""
-                                    helperText={errors.names.length === 0 ? "Ej : Alejando Andres" : errors.names}
+                                    helperText={errors.names ? "Ej : Alejando Andres" : errors.names}
                                     variant="outlined"
                                     size="small"
                                     fullWidth
@@ -130,13 +93,13 @@ export const FormDentist = ({ classes }) => {
                                     required
                                 />
                                 <TextField
-                                    error={errors.last_names.length === 0 ? false : true}
+                                    error={errors.last_names ? true : false}
                                     name="last_name"
                                     className={classes.textField}
                                     id="last_names"
                                     label="Apellidos"
                                     defaultValue=""
-                                    helperText={errors.rut.length === 0 ? "Ej : Constanzo Rivas" : errors.rut}
+                                    helperText={errors.rut ? "Ej : Constanzo Rivas" : errors.rut}
                                     helperText="Ej : Contanzo Rivas"
                                     variant="outlined"
                                     size="small"
@@ -149,13 +112,13 @@ export const FormDentist = ({ classes }) => {
                             <Grid container  >
                                 <Grid item lg={4} >
                                     <TextField
-                                        error={errors.adress.length === 0 ? false : true}
+                                        error={errors.adress ? true : false}
                                         name="adress"
                                         className={classes.textField}
                                         id="adress"
                                         label="Dirección"
                                         defaultValue=""
-                                        helperText={errors.adress.length === 0 ? "Ej : Pje Cau Cau" : errors.adress}
+                                        helperText={errors.adress ? "Ej : Pje Cau Cau" : errors.adress}
                                         variant="outlined"
                                         size="small"
                                         onChange={handleInputChange}
@@ -164,13 +127,13 @@ export const FormDentist = ({ classes }) => {
                                 </Grid>
                                 <Grid item lg={4}>
                                     <TextField
-                                        error={errors.phone_number.length === 0 ? false : true}
+                                        error={errors.phone_number ? true : false}
                                         name="phone_number"
                                         className={classes.textField}
                                         id="phone_number"
                                         label="Telefono"
                                         defaultValue=""
-                                        helperText={errors.phone_number.length === 0 ? "Ej : 95443443" : errors.phone_number}
+                                        helperText={errors.phone_number ? "Ej : 95443443" : errors.phone_number}
                                         variant="outlined"
                                         size="small"
                                         onChange={handleInputChange}
@@ -181,13 +144,13 @@ export const FormDentist = ({ classes }) => {
                                 <Grid item lg={4}>
 
                                     <TextField
-                                        error={errors.account_number.length === 0 ? false : true}
+                                        error={errors.account_number ? true : false}
                                         name="account_number"
                                         className={classes.textField}
                                         id="account_number"
                                         label="Numero de cuenta "
                                         defaultValue=""
-                                        helperText={errors.account_number.length === 0 ? "Ej : 434334343433" : errors.account_number}
+                                        helperText={errors.account_number ? "Ej : 434334343433" : errors.account_number}
                                         variant="outlined"
                                         size="small"
                                         onChange={handleInputChange}
@@ -226,13 +189,13 @@ export const FormDentist = ({ classes }) => {
                                 <Grid container className={classes.formUser} >
 
                                     <TextField
-                                        error={errors.user.length === 0 ? false : true}
+                                        error={errors.user ? true : false}
                                         name="user"
                                         className={classes.textField}
                                         id="user"
                                         label="Usuario "
                                         defaultValue=""
-                                        helperText={errors.user.length === 0 ? "Ej : Luis." : errors.user}
+                                        helperText={errors.user ? "Ej : Luis." : errors.user}
                                         variant="filled"
                                         size="small"
                                         fullWidth
@@ -253,7 +216,7 @@ export const FormDentist = ({ classes }) => {
                                         onChange={handleInputChange}
                                     />
                                     <TextField
-                                        error={errors.password.length === 0 ? false : true}
+                                        error={errors.password ? true : false}
                                         name="password"
                                         className={classes.textField}
                                         id="password"
@@ -264,7 +227,7 @@ export const FormDentist = ({ classes }) => {
                                         size="small"
                                         fullWidth
                                         type="password"
-                                        helperText={errors.password.length === 0 ? "*******" : errors.password}
+                                        helperText={errors.password ? "*******" : errors.password}
                                         onChange={handleInputChange}
                                         required
                                     />
