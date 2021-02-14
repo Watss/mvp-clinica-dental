@@ -11,6 +11,7 @@ import { validate, clean, format } from 'rut.js';
 export const FormDentist = ({ classes }) => {
 
     const navigate = useNavigate();
+
     const { enqueueSnackbar } = useSnackbar();
     const [checked, setChecked] = useState(true);
     const { dataForm: form, handleChangeForm : handleInputChange } = useForm({ "password": "", "office_id": 1 }) // El campo 'office_id' esta por defecto hasta que se cree la funcionalidad de sucursales
@@ -38,6 +39,7 @@ export const FormDentist = ({ classes }) => {
         const success = await postData('dentists',form);
         if(success){
             enqueueSnackbar('Dentista Creado Correctamente',{variant: 'success'});
+
             Navigate('/dentists');
         }else{
             enqueueSnackbar('No se pudo guardar el dentista',{variant: 'error'}); 
@@ -68,11 +70,9 @@ export const FormDentist = ({ classes }) => {
         <Paper elevation={0}>
             <form onSubmit={sendForm}>
                 <Container>
-                    <Grid container >
-
+                    <Grid container>
                         <Grid item lg={12}><Box fontSize="h5.fontSize" fontWeight="medium" fontFamily="fontFamily" mt={5} mb={5}>Registo odontologo</Box></Grid>
                         <Grid item lg={6} className={classes.containerFormDentist}>
-
                             <Grid container>
                                 <TextField
                                     error={!errorRut || errors.rut ? true : false}

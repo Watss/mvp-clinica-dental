@@ -54,7 +54,6 @@ const Dentist = () => {
         lastPage
     } = useGetApi('/dentists');
 
-
     useEffect(() => {
         getDentist();
     }, []);
