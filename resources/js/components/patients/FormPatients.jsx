@@ -3,71 +3,38 @@ import { Container, Grid, makeStyles, Box, Paper, TextField, Button, Checkbox, C
 import { CheckBox } from '@material-ui/icons';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { axiosInstance } from '../../utils/axios'
+import { useSnackbar } from 'notistack';
 import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import { useForm } from '../../hooks/useForm';
+import { usePostApi } from '../../hooks/usePostApi';
+import { validate, clean, format } from 'rut.js';
 
 export const FormPatients = ({ classes }) => {
 
+    const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
+    const { dataForm, handleChangeForm,setForm } = useForm({ "password": "", "office_id": 1 }); // El campo 'office_id' esta por defecto hasta que se cree la funcionalidad de sucursales
+    const {loader,errors,postData: createPatitens} = usePostApi(); 
+    const [errorRut, setErrorRut ] = useState(true);
+    const [rutValue, setRutValue ] = useState('');
+    
 
-    const [checked, setChecked] = useState(true);
-    const [form, setForm] = useState({ "password": "", "office_id": 1 }) // El campo 'office_id' esta por defecto hasta que se cree la funcionalidad de sucursales
-    const [loaderCreatePatients, setLoaderCreatePatients] = useState(false)
-    const [buttonCreateEnabled, setButtonCreateEnabled] = useState(true)
+    const handleChangeRut = e => {
+        let rutFormated = format(e.target.value);
+        setRutValue(rutFormated);
+        setErrorRut(validate(rutFormated));
+        setForm({...dataForm, rut : clean(rutFormated)});
+    }
 
-    const [errors, setErrors] = useState({
-        rut: [],
-        names: [],
-        last_names: [],
-        adress: [],
-        phone_number:[],
-        email:[],
-        city:[],
-    })
-
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
-
-    const createPatitens = async () => {
-        try {
-            setLoaderCreatePatients(true)
-            const res = await axiosInstance.post('patients', form);
-            // Realizar acciones si la peticion fue correcta
-            alert("paciente registrado ")
-            setLoaderCreatePatients(false)
-        } catch (error) {
-
-            setErrors(
-                {
-                    ...errors,
-
-                    "rut": error.response.data.errors.rut ? error.response.data.errors.rut : [],
-                    "names": error.response.data.errors.names ? error.response.data.errors.names : [],
-                    "last_names": error.response.data.errors.last_names ? error.response.data.errors.last_names : [],
-                    "adress": error.response.data.errors.adress ? error.response.data.errors.adress : [],
-                    "phone_number": error.response.data.errors.phone_number ? error.response.data.errors.phone_number : [],
-                    "email": error.response.data.errors.email ? error.response.data.errors.email:[],
-                    "city":error.response.data.errors.city ? error.response.data.errors.city:[],
-                }
-            )
-            setButtonCreateEnabled(false)
+    const sendForm = async event =>  {
+        const success = await createPatitens('patients',dataForm);
+        if(success){
+            enqueueSnackbar('Paciente Registrado Correctamente',{variant: 'success'});
+            navigate('/patients');
+        }else{
+            enqueueSnackbar('Ocurrio un error, verifique los datos ingresados',{variant: 'error'});
         }
-
-
-    }
-
-    const handleInputChange = (event) => {
-        setForm({
-            ...form,
-            [event.target.name]: event.target.value
-        })
-    }
-
-    const sendForm = (event) => {
-
-
-        createPatitens()
-
-
         event.preventDefault()
     }
 
@@ -82,49 +49,48 @@ export const FormPatients = ({ classes }) => {
 
                             <Grid container>
                                 <TextField
-                                    error={errors.rut.length === 0 ? false : true}
+                                    error={!errorRut || errors.rut ? true : false}
                                     name="rut"
                                     className={classes.textField}
                                     id="rut"
                                     label="Rut"
-                                    defaultValue=""
-                                    helperText=""
                                     variant="outlined"
                                     size="small"
-                                    helperText={errors.rut.length === 0 ? "Ej : 19187259-2" : errors.rut}
-                                    onChange={handleInputChange}
+                                    value={rutValue}
+                                    helperText={errors.rut ? errors.rut[0] : !errorRut ? "Rut Invalido, Verifique" : "Ej : 19187259-2" }
+                                    onChange={handleChangeRut}
+                                    onKeyUp={handleChangeRut}
                                     required
                                 />
                             </Grid>
                             <Grid container  >
 
                                 <TextField
-                                    error={errors.names.length === 0 ? false : true}
+                                    error={errors.names ? true : false}
                                     name="names"
                                     className={classes.textField}
                                     id="names"
                                     label="Nombres"
                                     defaultValue=""
-                                    helperText={errors.names.length === 0 ? "Ej : Pablo Luna" : errors.names}
+                                    helperText={errors.names ?  errors.names[0] : "Ej : Pablo Luna"} 
                                     variant="outlined"
                                     size="small"
                                     fullWidth
-                                    onChange={handleInputChange}
+                                    onChange={handleChangeForm}
                                     required
                                 />
                                 <TextField
-                                    error={errors.last_names.length === 0 ? false : true}
+                                    error={errors.last_names ? true : false}
                                     name="last_name"
                                     className={classes.textField}
                                     id="last_names"
                                     label="Apellidos"
                                     defaultValue=""
-                                    helperText={errors.rut.length === 0 ? "Ej : Arteaga XD" : errors.rut}
-                                    helperText="Arteaga XD"
+                                    helperText={errors.last_names ? errors.last_names[0] : 'ej: Perez Perez'}
                                     variant="outlined"
                                     size="small"
                                     fullWidth
-                                    onChange={handleInputChange}
+                                    onChange={handleChangeForm}
                                     required
                                 />
 
@@ -132,47 +98,47 @@ export const FormPatients = ({ classes }) => {
                             <Grid container  >
                                 <Grid item lg={4} >
                                     <TextField
-                                        error={errors.adress.length === 0 ? false : true}
+                                        error={errors.adress ? true : false }
                                         name="adress"
                                         className={classes.textField}
                                         id="adress"
                                         label="Dirección"
                                         defaultValue=""
-                                        helperText={errors.adress.length === 0 ? "Ej : 5 de abril 1071" : errors.adress}
+                                        helperText={errors.adress ? errors.adress[0] : "Ej : 5 de abril 1071"}
                                         variant="outlined"
                                         size="small"
-                                        onChange={handleInputChange}
+                                        onChange={handleChangeForm}
                                         required
                                     />
                                 </Grid>
                                 <Grid item lg={4}>
                                     <TextField
-                                        error={errors.phone_number.length === 0 ? false : true}
-                                        name="phone_number"
+                                        error={errors.phone_number ? true : false}
+                                        name="phone_number" 
                                         className={classes.textField}
                                         id="phone_number"
                                         label="Telefono"
                                         defaultValue=""
-                                        helperText={errors.phone_number.length === 0 ? "Ej : 999999999" : errors.phone_number}
+                                        helperText={errors.phone_number ?  errors.phone_number[0] : 'Ej : 999999999' }
                                         variant="outlined"
                                         size="small"
-                                        onChange={handleInputChange}
+                                        onChange={handleChangeForm}
                                         required
 
                                     />
                                 </Grid>
                                 <Grid item lg={4}>
                                     <TextField
-                                        error={errors.city.length === 0 ? false : true}
+                                        error={errors.city ? true : false}
                                         name="city"
                                         className={classes.textField}
                                         id="city"
                                         label="city"
                                         defaultValue=""
-                                        helperText={errors.city.length === 0 ? "Chillan" : errors.city}
+                                        helperText={errors.city ?  errors.city[0] : "Chillan" }
                                         variant="outlined"
                                         size="small"
-                                        onChange={handleInputChange}
+                                        onChange={handleChangeForm}
                                         required
 
                                     />
@@ -189,7 +155,7 @@ export const FormPatients = ({ classes }) => {
                         <Grid container item lg={12} className={classes.actionsButton} justify="space-between" >
 
                             <Button component={Link} to="/patients" variant="contained" size="small" disableElevation>cancelar</Button>
-                            <Button variant="contained" size="small" color="secondary" type="submit"  disableElevation  endIcon={loaderCreatePatients && <CircularProgress color={"inherit"} size={20} />}>Siguiente</Button>
+                            <Button variant="contained" size="small" color="secondary" type="submit"  disableElevation  endIcon={loader && <CircularProgress color={"inherit"} size={20} />}>Siguiente</Button>
 
                         </Grid>
                     </Grid>
