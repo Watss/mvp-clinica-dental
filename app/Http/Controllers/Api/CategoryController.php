@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Resources\Categories\CategoryCollection;
+use App\Http\Resources\Categories\CategoryResource;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -27,6 +28,10 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         $category = Category::create($request->validated());
+        return response()->json([
+            "success" => true,
+            "category" => CategoryResource::make($category)
+         ], 200);
     }
 
     /**

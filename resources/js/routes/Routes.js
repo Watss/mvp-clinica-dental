@@ -22,8 +22,8 @@ const routes = [
             { path: '/dentist/create', element: <CreateDentist /> },
             { path: '/dentist', element: <Dentist /> },
 
-            { path: '/item/create', element: <CreateItem /> },
-            { path: '/item', element: <Items /> },
+            { path: '/items/create', element: <CreateItem /> },
+            { path: '/items', element: <Items /> },
 
             { path: '/schedule/create', element: <CreateSchedule /> },
             { path: '/patients/create', element: <CreatePatients /> },
