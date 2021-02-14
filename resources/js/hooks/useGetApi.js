@@ -12,17 +12,19 @@ export const useGetApi = (endPoint) => {
     const getData = async (filters = {},page = 0,perPage = 5) => {
 
         const params = getParams(filters,page,perPage);
-        console.log('params',params);
+       
         setLoader(true);
         
         try {
 
             const res = await axiosInstance.get(endPoint,{params:params});
+            
             const {data,meta} = res.data;
             const {last_page,count} = meta;
             setData(data);
             setCount(count);
             setLastPage(last_page);
+            
 
         } catch (error) {
             const {errors} = error;
