@@ -40,7 +40,7 @@ const Items = () => {
     return (
         <Page className={classes.root} title="ListItems">
             <Tooltip title="Nuevo dentista" placement="bottom">
-                <Fab color="inherit" size="medium" aria-label="add" className={classes.fab} component={Link} to="/item/create">
+                <Fab color="inherit" size="medium" aria-label="add" className={classes.fab} component={Link} to="/items/create">
                     <AddIcon />
                 </Fab>
             </Tooltip>

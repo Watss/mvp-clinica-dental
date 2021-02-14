@@ -52,7 +52,7 @@ const Dentist = () => {
         loader,
         getData: getDentist,
         lastPage
-    } = useGetApi('/dentist');
+    } = useGetApi('/dentists');
 
 
     useEffect(() => {

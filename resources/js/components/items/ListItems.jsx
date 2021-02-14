@@ -20,7 +20,6 @@ const ListItems = () => {
     } = useGetApi('/items');
     
     const filter = () => {
-        console.log('filtrando',dataForm);
         getItems(dataForm,page);
     }
     

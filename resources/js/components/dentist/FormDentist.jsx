@@ -3,29 +3,42 @@ import { Container, Grid, makeStyles, Box, Paper, TextField, Button, Checkbox, C
 import { CheckBox } from '@material-ui/icons';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useForm } from '../../hooks/useForm';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { usePostApi } from '../../hooks/usePostApi';
 import { useSnackbar } from 'notistack';
+import { validate, clean, format } from 'rut.js';
 
 export const FormDentist = ({ classes }) => {
 
+    const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
     const [checked, setChecked] = useState(true);
     const { dataForm: form, handleChangeForm : handleInputChange } = useForm({ "password": "", "office_id": 1 }) // El campo 'office_id' esta por defecto hasta que se cree la funcionalidad de sucursales
     
     const {loader : loaderCreateDentist,errors,postData,} = usePostApi(); 
 
-    const [passwordIsValid, setpasswordIsValid] = useState(false)
-    const [buttonCreateEnabled, setButtonCreateEnabled] = useState(true)
+    const [passwordIsValid, setpasswordIsValid] = useState(false);
+    const [buttonCreateEnabled, setButtonCreateEnabled] = useState(true);
+
+    const [errorRut, setErrorRut ] = useState(false);
+    const [rutValue, setRutValue ] = useState('');
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
 
+    const handleChangeRut = e => {
+        let rutFormated = format(e.target.value);
+        setRutValue(rutFormated);
+        setErrorRut(validate(rutFormated));
+        setForm({...dataForm, rut : clean(rutFormated)});
+    }
+
     const createDentist = async () => {
         const success = await postData('dentists',form);
         if(success){
             enqueueSnackbar('Dentista Creado Correctamente',{variant: 'success'});
+            Navigate('/dentists');
         }else{
             enqueueSnackbar('No se pudo guardar el dentista',{variant: 'error'}); 
         }
@@ -62,17 +75,18 @@ export const FormDentist = ({ classes }) => {
 
                             <Grid container>
                                 <TextField
-                                    error={errors.rut ? true : false}
+                                    error={!errorRut || errors.rut ? true : false}
                                     name="rut"
                                     className={classes.textField}
                                     id="rut"
                                     label="Rut"
                                     defaultValue=""
                                     helperText=""
+                                    value={rutValue}
                                     variant="outlined"
                                     size="small"
-                                    helperText={errors.rut ? "Ej : 19187259-2" : errors.rut}
-                                    onChange={handleInputChange}
+                                    helperText={errors.rut ? errors.rut[0] : !errorRut ? "Rut Invalido, Verifique" : "Ej : 19187259-2" }
+                                    onChange={handleChangeRut}
                                     required
                                 />
                             </Grid>
@@ -85,7 +99,7 @@ export const FormDentist = ({ classes }) => {
                                     id="names"
                                     label="Nombres"
                                     defaultValue=""
-                                    helperText={errors.names ? "Ej : Alejando Andres" : errors.names}
+                                    helperText={errors.names ? errors.names[0] : "Ej : Alejando Andres"}
                                     variant="outlined"
                                     size="small"
                                     fullWidth
@@ -99,8 +113,7 @@ export const FormDentist = ({ classes }) => {
                                     id="last_names"
                                     label="Apellidos"
                                     defaultValue=""
-                                    helperText={errors.rut ? "Ej : Constanzo Rivas" : errors.rut}
-                                    helperText="Ej : Contanzo Rivas"
+                                    helperText={errors.last_names ? errors.last_names[0] : "Ej : Perez Perez"}
                                     variant="outlined"
                                     size="small"
                                     fullWidth
@@ -118,7 +131,7 @@ export const FormDentist = ({ classes }) => {
                                         id="adress"
                                         label="Dirección"
                                         defaultValue=""
-                                        helperText={errors.adress ? "Ej : Pje Cau Cau" : errors.adress}
+                                        helperText={errors.adress ? errors.adress[0] : "Ej : Pje Cau Cau"}
                                         variant="outlined"
                                         size="small"
                                         onChange={handleInputChange}
@@ -133,7 +146,7 @@ export const FormDentist = ({ classes }) => {
                                         id="phone_number"
                                         label="Telefono"
                                         defaultValue=""
-                                        helperText={errors.phone_number ? "Ej : 95443443" : errors.phone_number}
+                                        helperText={errors.phone_number ? errors.phone_number[0] : "Ej : 95443443"}
                                         variant="outlined"
                                         size="small"
                                         onChange={handleInputChange}
@@ -150,7 +163,7 @@ export const FormDentist = ({ classes }) => {
                                         id="account_number"
                                         label="Numero de cuenta "
                                         defaultValue=""
-                                        helperText={errors.account_number ? "Ej : 434334343433" : errors.account_number}
+                                        helperText={errors.account_number ? errors.account_number[0] : "Ej : 4222222222" }
                                         variant="outlined"
                                         size="small"
                                         onChange={handleInputChange}
@@ -195,7 +208,7 @@ export const FormDentist = ({ classes }) => {
                                         id="user"
                                         label="Usuario "
                                         defaultValue=""
-                                        helperText={errors.user ? "Ej : Luis." : errors.user}
+                                        helperText={errors.user ?  errors.user[0] : "Ej : Luis." }
                                         variant="filled"
                                         size="small"
                                         fullWidth
@@ -227,7 +240,7 @@ export const FormDentist = ({ classes }) => {
                                         size="small"
                                         fullWidth
                                         type="password"
-                                        helperText={errors.password ? "*******" : errors.password}
+                                        helperText={errors.password ? errors.password[0] : ''}
                                         onChange={handleInputChange}
                                         required
                                     />

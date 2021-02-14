@@ -9,6 +9,7 @@ import React, { useState,useEffect } from 'react';
 import axiosInstance from '../../utils/axios';
 import {useGetApi} from '../../hooks/useGetApi';
 import {useForm} from '../../hooks/useForm';
+import { usePostApi } from '../../hooks/usePostApi';
 
 const useStyles = makeStyles((theme) => ({
     drawer:{
@@ -29,28 +30,22 @@ export const DrawerCategories = ({open,handleCloseDialog}) => {
 
     const { enqueueSnackbar } = useSnackbar();
 
-    const { dataForm, handleOnChange} = useForm({});
-    const [errors, setErrors] = useState([]);
+    const { dataForm, handleChangeForm} = useForm({});
+    const {loader : loaderPost,errors,postData} = usePostApi(); 
     const [buttonLoader,setButtonLoader] = useState(false);
     const {
         data: categories,
-        loader,
+        loader : loaderGet,
         getData:getCategories
     } = useGetApi('/categories');
-    console.log(categories);
+    
     const saveCategory = async () => {
-        try {
-            setButtonLoader(true);
-            const res = await axiosInstance.post('/categories',dataForm);
-            enqueueSnackbar('Categoria Guardada Correctamente',{variant: 'success'});
-            getCategories();
-        } catch (error) {
-            setErrors(error.response.data.errors);
-            enqueueSnackbar('Error al Guardar la Categoria',{variant: 'error'});
-        } finally {
-            setNameCategory(null);
-            setButtonLoader(false);
-        }
+        const success = await postData('/categories',dataForm);
+        console.log('response',success);
+        enqueueSnackbar( success ? 'Categoria Guardada Correctamente' : 'Error al guardar categoria' ,
+                        {variant: success ? 'success' : 'error' });
+
+        getCategories();
     }
 
     useEffect( () => {
@@ -75,7 +70,7 @@ export const DrawerCategories = ({open,handleCloseDialog}) => {
                     id="name-category"
                     label="Nombre"
                     defaultValue=""
-                    onChange={handleOnChange}
+                    onChange={handleChangeForm}
                     helperText={errors.name ? errors.name[0] : ''}
                     variant="outlined"
                     size="small"
@@ -83,10 +78,10 @@ export const DrawerCategories = ({open,handleCloseDialog}) => {
                 />
             </Grid>
             <Grid container justify="center" className={classes.container}>
-                <Button variant="contained" size="small" color="secondary" disableElevation endIcon={buttonLoader && <CircularProgress color={"inherit"} size={20} />} onClick={saveCategory}>Guardar</Button>
+                <Button variant="contained" size="small" color="secondary" disableElevation endIcon={loaderPost && <CircularProgress color={"inherit"} size={20} />} onClick={saveCategory}>Guardar</Button>
             </Grid>
             <Grid container className={classes.container} justify="center">
-                { loader ? <CircularProgress style={{ marginTop:'20px' }} /> : <GetListCategories categories={categories} getCategories={getCategories}/>}
+                { loaderGet ? <CircularProgress style={{ marginTop:'20px' }} /> : <GetListCategories categories={categories} getCategories={getCategories}/>}
             </Grid>
         </Container>
     </Drawer>

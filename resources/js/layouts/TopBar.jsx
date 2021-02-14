@@ -71,7 +71,7 @@ const TopBar = ({
 
   const settingsLinks = [
     { link: '/dentist', name: 'Odontologos'},
-    { link: '/item', name: 'Prestaciones'},
+    { link: '/items', name: 'Prestaciones'},
   ]
 
   return (

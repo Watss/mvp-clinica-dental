@@ -9,6 +9,7 @@ import { DrawerCategories } from '../catogory/DrawerCategories';
 import {Link} from "react-router-dom";
 import { useSnackbar } from 'notistack';
 import { useForm } from '../../hooks/useForm';
+import { usePostApi } from '../../hooks/usePostApi';
 
 
 export const FormItem = ({ classes }) => {
@@ -18,10 +19,7 @@ export const FormItem = ({ classes }) => {
     const [openDialog,setOpenDialog] = useState(false);
     const [checked, setChecked] = useState(true);
     const {dataForm, handleChangeForm,setForm }  = useForm({});
-    const [loader, setLoader] = useState(false)
-    const [buttonEnabled, setButtonEnabled] = useState(true)
-    console.log(dataForm);
-    const [errors, setErrors] = useState([]);
+    const {loader,errors,postData,} = usePostApi();
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
@@ -29,15 +27,12 @@ export const FormItem = ({ classes }) => {
 
     const createItem = async (e) => {
         e.preventDefault();
-        try {
-            setLoader(true);
-            const res = await axiosInstance.post('items', dataForm);
+        const success = postData('items', dataForm);
+        if(success){
             enqueueSnackbar('Item Guardado Correctamente',{variant: 'success'});
-            navigate('/');
-        } catch (error) {
-            setErrors(error.response.data.errors);
-            enqueueSnackbar(error.response.data.message,{variant: 'error'});
-            setLoader(false);
+            navigate('/items');
+        }else{
+            enqueueSnackbar('Ocurrio un error al guardar la prestación',{variant: 'error'});
         }
     } 
 
@@ -59,7 +54,7 @@ export const FormItem = ({ classes }) => {
                 <Container>
                     <Grid container justify="center">
 
-                        <Grid item lg={8}><Box fontSize="h5.fontSize" fontWeight="medium" fontFamily="fontFamily" mt={5} mb={5}>Agregar Nuevo Item</Box></Grid>
+                        <Grid item lg={8}><Box fontSize="h5.fontSize" fontWeight="medium" fontFamily="fontFamily" mt={5} mb={5}>Agregar Nueva Prestación</Box></Grid>
                         <Grid item lg={8} className={classes.containerFormDentist}>
 
                         <Grid container>
@@ -134,8 +129,8 @@ export const FormItem = ({ classes }) => {
                             
                         </Grid>
                         <Grid container item lg={8} className={classes.actionsButton} justify="space-between" >
-                        <Button component={Link} to="/item" variant="contained" size="small" disableElevation>Cancelar</Button>
-                            <Button variant="contained" size="small" color="secondary" type="submit" disableElevation disabled={!buttonEnabled} endIcon={loader && <CircularProgress color={"inherit"} size={20} />}>Guardar</Button>
+                        <Button component={Link} to="/items" variant="contained" size="small" disableElevation>Cancelar</Button>
+                            <Button variant="contained" size="small" color="secondary" type="submit" disableElevation endIcon={loader && <CircularProgress color={"inherit"} size={20} />}>Guardar</Button>
 
                         </Grid>
                     </Grid>
