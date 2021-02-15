@@ -40,7 +40,7 @@ export const FormDentist = ({ classes }) => {
         if(success){
             enqueueSnackbar('Dentista Creado Correctamente',{variant: 'success'});
 
-            Navigate('/dentists');
+            navigate('/dentists');
         }else{
             enqueueSnackbar('No se pudo guardar el dentista',{variant: 'error'}); 
         }
