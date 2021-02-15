@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appoinments;
-use Illuminate\Http\Request;
 use App\Http\Resources\Appoinments\AppoinmentsCollection;
 use App\Http\Resources\Appoinments\AppoinmentsResource;
 use App\Http\Requests\AppoinmentsRequest;

@@ -39,5 +39,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('appoinments/{id}','Api\AppoinmentsController@restore')->name('appoinments.restore');
     Route::apiResource('appoinments','Api\AppoinmentsController');
 
+    //payments
 
+    Route::apiResource('payments','Api\PaymentController')->except('update');
 });
