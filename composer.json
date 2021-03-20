@@ -18,7 +18,6 @@
         "laraveles/spanish": "^1.5"
     },
     "require-dev": {
-        "beyondcode/laravel-er-diagram-generator": "^1.5",
         "facade/ignition": "^2.0",
         "fakerphp/faker": "^1.9.1",
         "laravel-shift/blueprint": "^1.20",
